@@ -19,7 +19,6 @@ var vm = new Vue({
     page: {
       total: '',
       limit: 10,
-      start: '',
       now: ''
     }
   },
@@ -53,11 +52,14 @@ var vm = new Vue({
       });
   },
   computed: {
+    pageNow: function(){
+      return this.page.now + 1;
+    },
     pagePrev:function(){
       return (this.page.now <= 0)? this.page.now : (this.page.now - 1);
     },
     pageNext: function(){
-      return (this.page.now < this.page.total - 1)? this.page.now + 1  : this.page.now ;
+      return (this.pageNow === this.page.total) ?　this.page.now : (this.page.now + 1);
     }
   },
   methods: {
@@ -108,6 +110,8 @@ var vm = new Vue({
       const self = this;
       self.pageView = [];
       self.page.now = num;
+      
+      
 
       var start = num * self.list.show,
           limit = Math.min( (start + self.list.show), data.length );
