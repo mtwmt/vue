@@ -52,7 +52,14 @@ var vm = new Vue({
         this.showList( this.getList );
       });
   },
-  computed: {},
+  computed: {
+    pagePrev:function(){
+      return (this.page.now <= 0)? this.page.now : (this.page.now - 1);
+    },
+    pageNext: function(){
+      return (this.page.now < this.page.total - 1)? this.page.now + 1  : this.page.now ;
+    }
+  },
   methods: {
     getSarea: function( area, key ) {
       const self = this;
@@ -75,7 +82,6 @@ var vm = new Vue({
             tempArr = (!self.showArea.length) ? self.ubikeStops : self.showArea;
 
       self.getList = tempArr.filter(function( e,i ){
-        // console.log( e.sna )
         if( e.sna.indexOf( key ) >= 0 ){
           return e;
         }
@@ -116,19 +122,18 @@ var vm = new Vue({
       var currentPage = num || 1,
           pLimit = self.page.limit,
           totalPage = parseInt( self.getList.length / self.list.show );  //總頁數
-          (totalPage % self.list.show == 0)? totalPage = totalPage: totalPage = totalPage + 1;
-      
 
-      
+      (totalPage % self.list.show == 0)? totalPage = totalPage: totalPage = totalPage + 1;
+      self.page.total =  totalPage;
+
       var tempArr = [],
           start = (currentPage - ((currentPage - 1) % pLimit)),
           limit = Math.min(  (currentPage - ((currentPage - 1) % pLimit) + (pLimit - 1) ) ,totalPage);
 
+      
       for( start; start <= limit ; start++ ){
         tempArr.push( start );
       };
-
-      console.log( 'num',num,'start',tempArr )
       return tempArr;
 
     }

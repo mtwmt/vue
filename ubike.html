@@ -52,16 +52,16 @@
   <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
       <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous" @click="showList( getList,page.now - 1  )">
+        <a class="page-link" href="#" aria-label="Previous" @click="showList( getList, pagePrev  )">
           <span aria-hidden="true">&laquo;</span>
           <span class="sr-only">Previous</span>
         </a>
       </li>
 
-      <li class="page-item" v-for="(e, i) in pagination(page.now +1)" @click="showList( getList, e-1  )"><a class="page-link" href="#">{{ e }}</a></li>
+      <li :class="(pg === page.now+1)?'page-item active':'page-item'" v-for="(pg, i) in pagination( page.now +1 )" @click="showList( getList, pg-1  )"><a class="page-link" href="#">{{ pg }}</a></li>
       
       <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next" @click="showList( getList,page.now + 1  )">
+        <a class="page-link" href="#" aria-label="Next" @click="showList( getList, pageNext )">
           <span aria-hidden="true">&raquo;</span>
           <span class="sr-only">Next</span>
         </a>
