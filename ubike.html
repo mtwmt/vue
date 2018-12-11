@@ -15,18 +15,12 @@
 <body>
 <h1>YouBike 臺北市公共自行車即時資訊</h1>
 <div id="app">
-  <div class="input-group mb-3">
-    <div class="input-group-prepend">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ getArea }}</button>
-      <div class="dropdown-menu">
-        <a @click="getSarea(area, keyWord)" class="dropdown-item" href="#" v-for="(area, idx) in ubikeArea">{{ area }}</a>
-      </div>
-    </div>
-    <input v-model="keyWord" type="search" class="form-control" aria-label="Text input with dropdown button">
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" @click="getKeyword(keyWord)">Search</button>
-    </div>
-  </div>
+  <search-bar
+    :ubike-area="ubikeArea"
+    @setarea="getArea"
+    @setkeyword="getKeyword"
+    v-model="ubikeArea.keyword"
+  ></search-bar>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -39,7 +33,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="s in pageView">
+      <tr v-for="s in list.data">
         <td>{{ s.sno }}</td>
         <td>{{ s.sna }}</td>
         <td>{{ s.sarea }}</td>
@@ -49,23 +43,10 @@
       </tr>
     </tbody>
   </table>
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-end">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous" @click="showList( getList, pagePrev  )">
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">Previous</span>
-        </a>
-      </li>
-      <li :class="(pg === pageNow )?'page-item active':'page-item'" v-for="(pg, i) in pagination( pageNow )" @click="showList( getList, pg-1 )"><a class="page-link" href="#">{{ pg }}</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next" @click="showList( getList, pageNext )">
-          <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only">Next</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  <pagination 
+    :page="list"
+    @listshow="getList"
+  ></pagination>
 </div>
   
 </body>
@@ -77,4 +58,4 @@
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.18-beta.0/vue.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script>
-<script src='script.js'></script>
+<script src='ubike.js'></script>
