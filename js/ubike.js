@@ -32,6 +32,10 @@ Vue.component('searchBar',{
 Vue.component('pagination',{
   props:['page'],
   computed: {
+    pageTotal: function(){
+      // 偵聽當下有幾頁
+      return this.setPage();
+    },
     pageNow: function(){
       return this.page.pagenow + 1;
     },
@@ -41,6 +45,9 @@ Vue.component('pagination',{
     pageNext: function(){
       return  (this.pageNow === this.page.pagetotal )? this.page.pagetotal - 1  : this.page.pagenow + 1;
     }
+  },
+  watch: {
+    pageTotal: function(){}
   },
   methods: {
     setPage: function( num ){
@@ -67,11 +74,8 @@ Vue.component('pagination',{
       this.$emit('listshow',data, self.page.pagenow );
     }
   },
-  watch: {
-
-  },
   template:`
-  <nav aria-label="Page navigation">
+  <nav aria-label="Page navigation" v-if="page.pagetotal > 0">
     <ul class="pagination justify-content-end">
       <li class="page-item">
         <a class="page-link" @click="setlist( page.total, pagePrev)" href="#" aria-label="Previous">
@@ -107,7 +111,7 @@ var vm = new Vue({
     list: {
       total: [],
       data: [],
-      viewlimit: 10,
+      viewlimit: 15,
       pagelimit: 10,
       pagelist: [],
       pagenow: '',

@@ -6,7 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <!-- <link rel="stylesheet" href="https://designmodo.github.io/Flat-UI/dist/css/flat-ui.css"> -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
   <style>
     body{ padding: 1em;  }
@@ -21,28 +20,30 @@
     @setkeyword="getKeyword"
     v-model="ubikeArea.keyword"
   ></search-bar>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>場站名稱</th>
-        <th>場站區域</th>
-        <th @click="getSort('sbi', sort)">目前可用車輛 <i :class="!sort.sbi ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
-        <th @click="getSort('tot', sort)">總停車格 <i :class="!sort.tot ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
-        <th>資料更新時間</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="s in list.data">
-        <td>{{ s.sno }}</td>
-        <td>{{ s.sna }}</td>
-        <td>{{ s.sarea }}</td>
-        <td>{{ s.sbi }}</td>
-        <td>{{ s.tot }}</td>
-        <td>{{ s.mday | timeFormat }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>場站名稱</th>
+          <th>場站區域</th>
+          <th @click="getSort('sbi', sort)">目前可用車輛 <i :class="!sort.sbi ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
+          <th @click="getSort('tot', sort)">總停車格 <i :class="!sort.tot ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
+          <th>資料更新時間</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="s in list.data">
+          <td>{{ s.sno }}</td>
+          <td>{{ s.sna }}</td>
+          <td>{{ s.sarea }}</td>
+          <td>{{ s.sbi }}</td>
+          <td>{{ s.tot }}</td>
+          <td>{{ s.mday | timeFormat }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <pagination 
     :page="list"
     @listshow="getList"
