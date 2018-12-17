@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import App from './App.vue'
-import axios from 'axios'
 import router from './router'
 import store from './store'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -10,10 +9,8 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import 'popper.js/dist/popper.min.js'
 
 Vue.config.productionTip = false;
-Vue.prototype.axios = axios;
 
-// Vue.use(Vuex)
-
+store.dispatch('loadData');
 new Vue({
   router,
   store,

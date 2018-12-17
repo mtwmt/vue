@@ -30,7 +30,7 @@ export default {
   data: function(){
     return {
       ubikeStops: [],
-        ubikeArea: {
+      ubikeArea: {
         label: '全區搜尋',
         areas: [],
         list: [],
