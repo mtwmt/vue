@@ -12,7 +12,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(s,i) in list.data" :key="i">
+        <!-- <tr v-for="(s,i) in list.data" :key="i"> -->
+        <tr v-for="(s,i) in setList" :key="i">
           <td>{{ s.sno }}</td>
           <td>{{ s.sna }}</td>
           <td>{{ s.sarea }}</td>
@@ -28,7 +29,7 @@
 <script>
 export default {
   name: 'ubikeList',
-  props: ['list','sort'],
+  props: ['list','sort','setList'],
   data: function(){
     return{}
   },

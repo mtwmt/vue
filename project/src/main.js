@@ -10,7 +10,8 @@ import 'popper.js/dist/popper.min.js'
 
 Vue.config.productionTip = false;
 
-store.dispatch('loadData');
+// store.dispatch('loadData');
+// store.dispatch('loadTaipeiUbike');
 new Vue({
   router,
   store,

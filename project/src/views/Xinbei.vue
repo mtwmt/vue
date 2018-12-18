@@ -1,26 +1,24 @@
 <template>
-  <ul>
-    <li v-for="(item,idx) in data" :key="idx">{{ item.title }}</li>
-  </ul>
+  <div>
+    
+  </div>
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex'
+// import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
+// import ubikeList from '@/components/Ubikelist.vue'
+// import searchBar from '@/components/Search.vue'
+// import pagination from '@/components/Page.vue'
 
 export default {
   name: 'xinbei',
-  data(){
-
-  },
-  computed:{
-    ...mapState(['data'])
-  },
-  mounted(){
-    // this.setDataInfo(['a','b','c']);
+  components: { },
+  created(){},
+  computed: {
+    
   },
   methods: {
-    ...mapMutations(['setDataInfo']),
-    ...mapActions(['loadData'])
+
   }
 }
 </script>
