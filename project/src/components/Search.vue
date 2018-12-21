@@ -52,7 +52,7 @@ export default {
       self.list.total = (!self.ubikeArea.list.length)? self.ubikeStations: self.ubikeArea.list;
       
       if( self.ubikeArea.keyword.length > 0 ){
-        self.getKeyword( keyword );
+        self.setKeyword( keyword );
       }
       self.list.pagenow = 0;
     },
