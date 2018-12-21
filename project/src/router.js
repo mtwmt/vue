@@ -8,13 +8,19 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/',
+      // name: 'default',
+      
+      component: taipei
+    },
+    {
       path: '/taipei',
-      name: 'taipei',
+      // name: 'taipei',
       component: taipei
     },
     {
       path: '/xinbei',
-      name: 'xinbei',
+      // name: 'xinbei',
       component: xinbei
     }
   ]

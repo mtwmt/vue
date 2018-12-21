@@ -34,7 +34,7 @@ let store = new Vuex.Store({
         temp.push( state.list.total[start] );
       }
       return temp;
-    }
+    },
   },
   mutations: {
     setTaipeiUbike( state,data ){

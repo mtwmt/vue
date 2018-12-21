@@ -6,8 +6,8 @@
           <th>#</th>
           <th>場站名稱</th>
           <th>場站區域</th>
-          <th @click="setSort('sbi', sort)">目前可用車輛 <i :class="!sort.sbi ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
-          <th @click="setSort('tot', sort)">總停車格 <i :class="!sort.tot ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
+          <th @click="setSort('sbi')">目前可用車輛 <i :class="!sort.sbi ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
+          <th @click="setSort('tot')">總停車格 <i :class="!sort.tot ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
           <th>資料更新時間</th>
         </tr>
       </thead>
@@ -36,7 +36,7 @@ export default {
   filters: {
     timeFormat(t) {
       var date = [],
-        time = [];
+          time = [];
       date.push(t.substr(0, 4));
       date.push(t.substr(4, 2));
       date.push(t.substr(6, 2));
@@ -47,8 +47,19 @@ export default {
     }
   },
   methods: {
-    setSort( obj, sort ){
-      this.$emit('setSort', obj,sort);
+    setSort( obj ){
+      const self = this;
+      let list,
+          tempArr = self.list.total;
+
+      if( self.sort[obj] === 'less' ){
+        self.sort[obj] = '';
+        list = tempArr.sort( (a,b) => a[obj] - b[obj] );
+      }else{
+        self.sort[obj] = 'less';
+        list = tempArr.sort( (a,b) => b[obj] - a[obj] ); 
+      }
+
     }
   }
 }
