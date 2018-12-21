@@ -28,10 +28,13 @@ export default {
   components: { searchBar, pagination, ubikeList  },
   created(){
     this.$store.dispatch('loadTaipeiUbike');
+    console.log( 111,this.$store.getters.getArea )
+    this.$store.getters.getArea = '000';
   },
   computed: {
     ...mapState(['ubikeTaipei','ubikeArea','list','sort']),
-    ...mapGetters(['getList','getSort']),
+    ...mapGetters(['getList','getArea']),
+    
   },
   methods: {
     ...mapMutations(['setTaipeiUbike']),
