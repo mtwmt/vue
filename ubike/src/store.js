@@ -37,14 +37,13 @@ let store = new Vuex.Store({
       }
       return temp;
     },
-    getArea: function ( state,  ){
+    getArea: function( state ){
       const city = state.city,
             temp = state[city].map( el => el.sarea );
 
       state.ubikeArea.areas = temp.filter( (el,idx,arr) => (arr.indexOf(el) === idx) );
       state.ubikeArea.areas.splice( 0,1,'全區搜尋');
-      state.list.total = state[city];
-
+      state.list.total = state[city]; 
     }
   },
   mutations: {
@@ -56,6 +55,8 @@ let store = new Vuex.Store({
     },
     setCity( state,data ){
       state.city = data;
+      state.ubikeArea.keyword = '';
+      state.ubikeArea.label = '全區搜尋';
     }
   },
   actions: {
@@ -71,12 +72,10 @@ let store = new Vuex.Store({
         .then( res => {
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           obj.commit('setXinbeiUbike', res );
-        })
+        });
     }
   }
 });
-
-
 
 export default store;
 

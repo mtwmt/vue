@@ -27,16 +27,19 @@ export default {
   name: 'xinbei',
   components: { searchBar, pagination, ubikeList  },
   created(){
-    this.$store.dispatch('loadXinbeiUbike');
-    this.$store.commit('setCity', 'ubikeXinbei');
+    if( !this.ubikeXinbei.length ){
+      this.$store.dispatch('loadXinbeiUbike');
+    }
+    
+    // this.$store.commit('setCity', 'ubikeXinbei');
   },
   computed: {
     ...mapState(['ubikeXinbei','ubikeArea','list','sort']),
     ...mapGetters(['getList'])
   },
   methods: {
-    ...mapMutations(['setTaipeiUbike','setCity']),
-    ...mapActions(['loadTaipeiUbike']),
+    ...mapMutations(['setXinbeiUbike','setCity']),
+    ...mapActions(['loadXinbeiUbike']),
   }
 }
 </script>

@@ -27,16 +27,20 @@ export default {
   name: 'taipei',
   components: { searchBar, pagination, ubikeList  },
   created(){
-    this.$store.dispatch('loadTaipeiUbike');
-    this.$store.commit('setCity', 'ubikeTaipei');
+    // console.log( this.list.total.length )
+    if( !this.ubikeTaipei.length ){
+      this.$store.dispatch('loadTaipeiUbike');
+    }
+    
   },
   computed: {
-    ...mapState(['city','ubikeTaipei','ubikeArea','list','sort']),
+    ...mapState(['ubikeTaipei','ubikeArea','list','sort']),
     ...mapGetters(['getList'])
   },
   methods: {
     ...mapMutations(['setTaipeiUbike','setCity']),
     ...mapActions(['loadTaipeiUbike']),
+    
   }
 }
 </script>
