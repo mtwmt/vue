@@ -1,11 +1,12 @@
 <template>
   <div id="app">
-    <h1>YouBike {{ $route.params.cn }}公共自行車即時資訊</h1>
+    <h1>YouBike {{ getLabel }}公共自行車即時資訊</h1>
     <nav>
       <router-link
         v-for="( link, idx ) in links"
         :key="idx"
-        :to="'/'+link.en"
+        :to="{ path: '/' + link.en  }"
+        click= "getLabel"
       >{{ link.cn + ' | ' }}</router-link>
       <!-- <router-link to="/taipei">台北市</router-link> | 
       <router-link to="/xinbei">新北市</router-link>-->
@@ -15,6 +16,7 @@
   </div>
 </template>
 <script>
+// import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
 export default {
   name: "app",
   data() {
@@ -27,20 +29,21 @@ export default {
   },
   computed: {
     getLabel: function() {
-      let self = this;
-      return this.links.find(function(e) {
-        if (self.$route.en === e.en) {
-          return (self.$route.params.cn = e.cn);
+      const self = this;
+      let temp = {};
+      self.links.find(function( e ){
+        if( ('/' + e.en) == self.$route.path ){
+          temp = e.cn;
+         
         }
       });
+      return temp;
     }
   },
-  created() {},
+  created() {
+    
+  },
   methods: {
-    changeCity: function() {
-      this.getLabel;
-      console.log(this.$route.name);
-    }
   }
 };
 </script>

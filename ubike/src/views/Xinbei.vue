@@ -1,7 +1,7 @@
 <template>
   <div>
     <search-bar
-      :ubike-stations="ubikeTaipei"
+      :ubike-stations="ubikeXinbei"
       :ubike-area="ubikeArea"
       :list="list"
       v-model="ubikeArea.keyword"
@@ -24,20 +24,18 @@ import searchBar from '@/components/Search.vue'
 import pagination from '@/components/Page.vue'
 
 export default {
-  name: 'taipei',
+  name: 'xinbei',
   components: { searchBar, pagination, ubikeList  },
   created(){
-    this.$store.dispatch('loadTaipeiUbike');
-    console.log( 111,this.$store.getters.getArea )
-    this.$store.getters.getArea = '000';
+    this.$store.dispatch('loadXinbeiUbike');
+    this.$store.commit('setCity', 'ubikeXinbei');
   },
   computed: {
-    ...mapState(['ubikeTaipei','ubikeArea','list','sort']),
-    ...mapGetters(['getList','getArea']),
-    
+    ...mapState(['ubikeXinbei','ubikeArea','list','sort']),
+    ...mapGetters(['getList'])
   },
   methods: {
-    ...mapMutations(['setTaipeiUbike']),
+    ...mapMutations(['setTaipeiUbike','setCity']),
     ...mapActions(['loadTaipeiUbike']),
   }
 }

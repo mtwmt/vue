@@ -6,21 +6,21 @@ import xinbei from './views/Xinbei.vue'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
-      // name: 'default',
-      
+      name: 'taipei',
       component: taipei
     },
     {
       path: '/taipei',
-      // name: 'taipei',
+      name: 'taipei',
       component: taipei
     },
     {
       path: '/xinbei',
-      // name: 'xinbei',
+      name: 'xinbei',
       component: xinbei
     }
   ]

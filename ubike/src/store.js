@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
   state: {
+    city: '',
     ubikeTaipei: [],
     ubikeXinbei: [],
     ubikeArea: {
@@ -34,20 +35,16 @@ let store = new Vuex.Store({
       for( start; start < limit; start++ ){
         temp.push( state.list.total[start] );
       }
-      // console.log( 'gutter',gutter )
       return temp;
     },
-    test:function( state, gutters ){
-      return 'aaa'
-    },
-    getArea: function( state, gutter ){
-      const temp = state.ubikeTaipei.map( el => el.sarea );
+    getArea: function ( state,  ){
+      const city = state.city,
+            temp = state[city].map( el => el.sarea );
+
       state.ubikeArea.areas = temp.filter( (el,idx,arr) => (arr.indexOf(el) === idx) );
       state.ubikeArea.areas.splice( 0,1,'全區搜尋');
-      state.list.total = state.ubikeTaipei;
+      state.list.total = state[city];
 
-      // console.log( 'gutter', gutter)
-      return store.getters.test.length
     }
   },
   mutations: {
@@ -56,7 +53,9 @@ let store = new Vuex.Store({
     },
     setXinbeiUbike( state,data ){
       state.ubikeXinbei = data;
-      
+    },
+    setCity( state,data ){
+      state.city = data;
     }
   },
   actions: {
@@ -70,7 +69,6 @@ let store = new Vuex.Store({
     loadXinbeiUbike( obj ){
       axios.get('api/v1/rest/datastore/382000000A-000352-001')
         .then( res => {
-          // console.log( res.data.result.records );
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           obj.commit('setXinbeiUbike', res );
         })

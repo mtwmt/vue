@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "ubike",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -54,6 +54,6 @@
   ],
   "description": "## Project setup ``` npm install ```",
   "main": "babel.config.js",
-  "author": "",
+  "author": "Mandy",
   "license": "ISC"
 }
