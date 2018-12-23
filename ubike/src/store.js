@@ -38,7 +38,9 @@ let store = new Vuex.Store({
       return temp;
     },
     getArea: function( state ){
-      const city = state.city,
+      //  console.log( 'state',state.city )
+      const 
+            city = (!state.city)? 'ubikeTaipei':state.city,
             temp = state[city].map( el => el.sarea );
 
       state.ubikeArea.areas = temp.filter( (el,idx,arr) => (arr.indexOf(el) === idx) );
