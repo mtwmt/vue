@@ -18,7 +18,7 @@ let store = new Vuex.Store({
     list: {
       total: [],
       viewlimit: 10,
-      pagelimit: 20,
+      pagelimit: 5,
       pagenow: 0,
       pagetotal: ''
     },
@@ -70,7 +70,8 @@ let store = new Vuex.Store({
         });
     },
     loadXinbeiUbike( obj ){
-      axios.get('api/v1/rest/datastore/382000000A-000352-001')
+      // axios.get('api/v1/rest/datastore/382000000A-000352-001')
+      axios.get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec')
         .then( res => {
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           obj.commit('setXinbeiUbike', res );
@@ -80,4 +81,3 @@ let store = new Vuex.Store({
 });
 
 export default store;
-
