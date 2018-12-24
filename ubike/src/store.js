@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
   state: {
-    city: '',
+    city: 'ubikeTaipei',
     ubikeTaipei: [],
     ubikeXinbei: [],
     ubikeArea: {
@@ -80,4 +80,9 @@ let store = new Vuex.Store({
   }
 });
 
+<<<<<<< HEAD
 export default store;
+
+=======
+export default store;
+>>>>>>> 00bef3e479ca97a773a4d145edbc9516ab5b6a11

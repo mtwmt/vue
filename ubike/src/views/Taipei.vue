@@ -14,6 +14,9 @@
     <pagination 
       :page="list"
     />
+
+  <pre>{{list}}</pre>
+  <pre>{{ getArea }}</pre>
   </div>
 </template>
 

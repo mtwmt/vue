@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     ...mapState(['ubikeXinbei','ubikeArea','list','sort']),
-    ...mapGetters(['getList'])
+    ...mapGetters(['getList','getArea'])
   },
   methods: {
     ...mapMutations(['setXinbeiUbike','setCity']),
