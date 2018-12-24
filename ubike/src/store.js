@@ -70,8 +70,8 @@ let store = new Vuex.Store({
         });
     },
     loadXinbeiUbike( obj ){
-      // axios.get('api/v1/rest/datastore/382000000A-000352-001')
-      axios.get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec')
+      axios.get('http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001')
+      // axios.get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec')
         .then( res => {
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           obj.commit('setXinbeiUbike', res );
