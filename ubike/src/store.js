@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
   state: {
-    city: '',
+    city: 'ubikeTaipei',
     ubikeTaipei: [],
     ubikeXinbei: [],
     ubikeArea: {
@@ -37,14 +37,15 @@ let store = new Vuex.Store({
       }
       return temp;
     },
-    getArea: function ( state,  ){
+    getArea: function ( state ){
       const city = state.city,
             temp = state[city].map( el => el.sarea );
 
       state.ubikeArea.areas = temp.filter( (el,idx,arr) => (arr.indexOf(el) === idx) );
       state.ubikeArea.areas.splice( 0,1,'全區搜尋');
       state.list.total = state[city];
-
+      console.log('qqqq', city)
+      return state;
     }
   },
   mutations: {
@@ -75,8 +76,6 @@ let store = new Vuex.Store({
     }
   }
 });
-
-
 
 export default store;
 

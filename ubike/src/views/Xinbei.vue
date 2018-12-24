@@ -28,11 +28,12 @@ export default {
   components: { searchBar, pagination, ubikeList  },
   created(){
     this.$store.dispatch('loadXinbeiUbike');
+    // this.getArea;
     this.$store.commit('setCity', 'ubikeXinbei');
   },
   computed: {
     ...mapState(['ubikeXinbei','ubikeArea','list','sort']),
-    ...mapGetters(['getList'])
+    ...mapGetters(['getList','getArea'])
   },
   methods: {
     ...mapMutations(['setTaipeiUbike','setCity']),

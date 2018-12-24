@@ -10,17 +10,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'taipei',
+      // name: 'taipei',
       component: taipei
     },
     {
       path: '/taipei',
-      name: 'taipei',
+      // name: 'taipei',
       component: taipei
     },
     {
       path: '/xinbei',
-      name: 'xinbei',
+      // name: 'xinbei',
       component: xinbei
     }
   ]

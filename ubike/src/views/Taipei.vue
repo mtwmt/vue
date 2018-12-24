@@ -14,6 +14,9 @@
     <pagination 
       :page="list"
     />
+
+  <pre>{{list}}</pre>
+  <pre>{{ getArea }}</pre>
   </div>
 </template>
 
@@ -28,11 +31,12 @@ export default {
   components: { searchBar, pagination, ubikeList  },
   created(){
     this.$store.dispatch('loadTaipeiUbike');
-    this.$store.commit('setCity', 'ubikeTaipei');
+    // this.$store.commit('setCity', 'ubikeTaipei');
   },
   computed: {
     ...mapState(['city','ubikeTaipei','ubikeArea','list','sort']),
-    ...mapGetters(['getList'])
+    ...mapGetters(['getList','getArea']),
+    setCity
   },
   methods: {
     ...mapMutations(['setTaipeiUbike','setCity']),
