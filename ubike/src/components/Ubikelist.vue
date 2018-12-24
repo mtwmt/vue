@@ -30,9 +30,7 @@
 export default {
   name: 'ubikeList',
   props: ['list','sort','setList'],
-  data: function(){
-    return{}
-  },
+  computed: {},
   filters: {
     timeFormat(t) {
       var date = [],
@@ -51,7 +49,6 @@ export default {
       const self = this;
       let list,
           tempArr = self.list.total;
-
       if( self.sort[obj] === 'less' ){
         self.sort[obj] = '';
         list = tempArr.sort( (a,b) => a[obj] - b[obj] );
@@ -59,7 +56,6 @@ export default {
         self.sort[obj] = 'less';
         list = tempArr.sort( (a,b) => b[obj] - a[obj] ); 
       }
-
     }
   }
 }
