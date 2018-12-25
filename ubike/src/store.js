@@ -71,19 +71,12 @@ let store = new Vuex.Store({
         obj.commit('setTaipeiUbike', temp);
       });
     },
-<<<<<<< HEAD
-    loadXinbeiUbike( obj ){
-      axios.get('http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001')
-      // axios.get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec')
-        .then( res => {
-=======
     loadXinbeiUbike(obj) {
       axios
         .get(
           'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001'
         )
         .then(res => {
->>>>>>> MAC
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           let temp = res.filter(i => i.act === '1');
           obj.commit('setXinbeiUbike', temp);
@@ -93,7 +86,6 @@ let store = new Vuex.Store({
       axios
         .get('https://script.google.com/macros/s/AKfycbzn2V1by0BTpdXW975rnHNvX6fF6nA4SxYyMlOGjNA4EE_wtg0/exec')
         .then(res => {
-          console.log(res.data.retVal);
           res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
           let temp = res.filter(i => i.act === '1');
           obj.commit('setTaoyuanUbike', temp);
