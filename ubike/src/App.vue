@@ -5,7 +5,7 @@
       <router-link
         v-for="( link, idx ) in links"
         :key="idx"
-        :to="{ path: '/' + link.en  }"
+        :to="{ path: '/'+link.en  }"
         :click= "goCity()"
       >{{ link.cn + ' | ' }}</router-link>
     </nav>
@@ -20,9 +20,9 @@ export default {
   data() {
     return {
       links: [
-        { cn: "台北市", en: "taipei", bike: "ubikeTaipei" },
-        { cn: "新北市", en: "xinbei", bike: "ubikeXinbei" },
-        { cn: "桃園市", en: "taoyuan", bike: "ubikeTaoyuan" }
+        { cn: "台北市", en: "taipei" },
+        { cn: "新北市", en: "xinbei" },
+        { cn: "桃園市", en: "taoyuan" }
       ]
     };
   },
@@ -37,17 +37,16 @@ export default {
         }
       });
       return temp;
-    }
+    },
   },
   created() {
-    
   },
   methods: {
     ...mapMutations(['setCity']),
     ...mapGetters(['getArea']),
     goCity: function(){
-      this.$store.commit('setCity', this.currentCity.bike );
-      this.getArea( this.currentCity.bike );
+      this.$store.commit('setCity', this.currentCity.en );
+      this.getArea( this.currentCity.en );
     },
   }
 };

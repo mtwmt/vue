@@ -1,10 +1,10 @@
 <template>
   <div>
     <search-bar
-      :ubike-stations="ubikeTaipei"
-      :ubike-area="ubikeArea"
+      :ubike-stations="ubiketaipei"
+      :ubike-area="ubikearea"
       :list="list"
-      v-model="ubikeArea.keyword"
+      v-model="ubikearea.keyword"
     />
     <ubike-list 
       :list="list"
@@ -27,14 +27,13 @@ export default {
   name: 'taipei',
   components: { searchBar, pagination, ubikeList  },
   created(){
-    // console.log( this.list.total.length )
-    if( !this.ubikeTaipei.length ){
+    if( !this.ubiketaipei.length ){
       this.$store.dispatch('loadTaipeiUbike');
     }
     
   },
   computed: {
-    ...mapState(['ubikeTaipei','ubikeArea','list','sort']),
+    ...mapState(['ubiketaipei','ubikearea','list','sort']),
     ...mapGetters(['getList'])
   },
   methods: {

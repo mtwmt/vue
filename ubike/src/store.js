@@ -7,10 +7,10 @@ Vue.use(Vuex);
 let store = new Vuex.Store({
   state: {
     city: '',
-    ubikeTaipei: [],
-    ubikeXinbei: [],
-    ubikeTaoyuan: [],
-    ubikeArea: {
+    ubiketaipei: [],
+    ubikexinbei: [],
+    ubiketaoyuan: [],
+    ubikearea: {
       label: '全區搜尋',
       areas: [],
       list: [],
@@ -38,29 +38,30 @@ let store = new Vuex.Store({
       }
       return temp;
     },
-    getArea: function(state) {
-      const city = !state.city ? 'ubikeTaipei' : state.city,
-        temp = state[city].map(el => el.sarea);
+    getArea: function (state) {
+      const city = !state.city ? 'taipei' : state.city,
+        station = state['ubike' + state.city],
+        temp = station.map(el => el.sarea);
 
-      state.ubikeArea.areas = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
-      state.ubikeArea.areas.splice(0, 1, '全區搜尋');
-      state.list.total = state[city];
+      state.ubikearea.areas = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
+      state.ubikearea.areas.splice(0, 1, '全區搜尋');
+      state.list.total = station;
     },
   },
   mutations: {
     setTaipeiUbike(state, data) {
-      state.ubikeTaipei = data;
+      state.ubiketaipei = data;
     },
     setXinbeiUbike(state, data) {
-      state.ubikeXinbei = data;
+      state.ubikexinbei = data;
     },
     setTaoyuanUbike(state, data) {
-      state.ubikeTaoyuan = data;
+      state.ubiketaoyuan = data;
     },
     setCity(state, data) {
       state.city = data;
-      state.ubikeArea.keyword = '';
-      state.ubikeArea.label = '全區搜尋';
+      state.ubikearea.keyword = '';
+      state.ubikearea.label = '全區搜尋';
     },
   },
   actions: {
