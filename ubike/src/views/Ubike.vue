@@ -1,8 +1,8 @@
 <template>
   <div>
     <search-bar
-      
-      :ubike-area="currentList"
+      :ubike-stations="currentList"
+      :ubike-area="ubikearea"
       :list="list"
       v-model="ubikearea.keyword"
     />
@@ -14,7 +14,6 @@
     <pagination 
       :page="list"
     />
-    {{ currentCity.cn + city }}
   </div>
 </template>
 
@@ -30,26 +29,29 @@ export default {
   data() {
     return {
       links: [
-        { cn: "台北市", en: "taipei", station: 'ubiketaipei' },
-        { cn: "新北市", en: "xinbei", station: 'ubikexinbei' },
-        { cn: "桃園市", en: "taoyuan", station: 'ubiketaoyuan' }
+        { cn: "台北市", en: "taipei" },
+        { cn: "新北市", en: "xinbei" },
+        { cn: "桃園市", en: "taoyuan" }
       ]
     };
   },
   created(){
-    const current = this.currentCity.en;
-    console.log( this.ubiketaipei )
     this.$store.dispatch('loadTaipeiUbike');
     this.$store.dispatch('loadXinbeiUbike');
     this.$store.dispatch('loadTaoyuanUbike');
- 
   },
   computed: {
     currentCity(){
-      return this.links.find( e => e.en == this.$route.params.city )
+      // var self = this;
+      // return this.links.find(function (e) {
+      //   return e.en === self.$route.params.city;
+      // });
+      return this.links.find( e => e.en == this.$route.params.city );
     },
     currentList(){
-      console.log(123)
+      if( this.$route.params.city == this.currentCity.en ){
+        return this['ubike' + this.currentCity.en];
+      }
     },
     ...mapState(['city','ubiketaipei','ubikexinbei','ubiketaoyuan','ubikearea','list','sort']),
     ...mapGetters(['getList']),

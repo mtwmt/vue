@@ -14,13 +14,4 @@
 
 module.exports = {
   baseUrl: process.env.NODE_ENV === 'production' ? '/ubike/' : './',
-  devServer: {
-    proxy: {
-      '^/api': {
-        target: 'http://data.ntpc.gov.tw',
-        ws: true,
-        changeOrigin: true
-      }
-    },
-  },
 };
