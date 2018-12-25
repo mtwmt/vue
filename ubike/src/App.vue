@@ -8,8 +8,6 @@
         :to="{ path: '/' + link.en  }"
         :click= "goCity()"
       >{{ link.cn + ' | ' }}</router-link>
-      <!-- <router-link to="/taipei">台北市</router-link> | 
-      <router-link to="/xinbei">新北市</router-link>-->
     </nav>
     <br>
     <router-view/>
@@ -23,7 +21,8 @@ export default {
     return {
       links: [
         { cn: "台北市", en: "taipei", bike: "ubikeTaipei" },
-        { cn: "新北市", en: "xinbei", bike: "ubikeXinbei" }
+        { cn: "新北市", en: "xinbei", bike: "ubikeXinbei" },
+        { cn: "桃園市", en: "taoyuan", bike: "ubikeTaoyuan" }
       ]
     };
   },
