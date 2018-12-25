@@ -1,5 +1,5 @@
 <template>
-  <nav aria-label="Page navigation" v-if="page.pagetotal > 0">
+  <nav aria-label="Page navigation" v-if="page.pagetotal > 1">
     <ul class="pagination justify-content-end">
       <li class="page-item">
         <a class="page-link" @click="setlist( pagePrev)" href="#" aria-label="Previous">
@@ -51,7 +51,8 @@ export default {
           pLimit = self.page.pagelimit,
           totalPage = parseInt( self.page.total.length / self.page.viewlimit );  //總頁數
 
-      totalPage = (totalPage % self.page.viewlimit == 0) ? totalPage: totalPage + 1;
+      totalPage = (totalPage % self.page.viewlimit == 1) ? totalPage: totalPage + 1;
+      
       self.page.pagetotal =  totalPage;
       
       var tempArr = [],
