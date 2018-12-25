@@ -1,53 +1,65 @@
 <template>
   <div id="app">
     <h1>YouBike {{ currentCity.cn }}公共自行車即時資訊</h1>
-    <nav>
+    <!-- <nav>
       <router-link
-        v-for="( link, idx ) in links"
+        v-for="( link, idx ) in ubikecity"
         :key="idx"
         :to="{ path: '/'+link.en  }"
-        :click= "goCity()"
+        :click="goCity()"
       >{{ link.cn + ' | ' }}</router-link>
-    </nav>
+    </nav> -->
+    <div class="dropdown">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="cityButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >{{ currentCity.cn }}</button>
+      <div class="dropdown-menu" aria-labelledby="cityButton">
+        <a
+          class="dropdown-item"
+          href="#"
+          v-for="( link, idx ) in ubikecity"
+          :key="idx"
+          @click="goCity( link.en )"
+        >{{ link.cn }}</a>
+      </div>
+    </div>
+
     <br>
     <router-view/>
   </div>
 </template>
 <script>
-import { mapState, mapMutations, mapGetters } from 'vuex'
+import { mapState, mapMutations, mapGetters } from "vuex";
 export default {
   name: "app",
-  data() {
-    return {
-      links: [
-        { cn: "台北市", en: "taipei" },
-        { cn: "新北市", en: "xinbei" },
-        { cn: "桃園市", en: "taoyuan" }
-      ]
-    };
-  },
   computed: {
-    ...mapState(['city']),
+    ...mapState(["city", "ubikecity"]),
     currentCity: function() {
       const self = this;
       let temp = {};
-      self.links.find(function( e ){
-        if( ('/' + e.en) == self.$route.path ){
+      self.ubikecity.find(function(e) {
+        if ("/" + e.en == self.$route.path) {
           temp = e;
         }
       });
       return temp;
-    },
+    }
   },
-  created() {
-  },
+  created() {},
   methods: {
-    ...mapMutations(['setCity']),
-    ...mapGetters(['getArea']),
-    goCity: function(){
-      this.$store.commit('setCity', this.currentCity.en );
-      this.getArea( this.currentCity.en );
-    },
+    ...mapMutations(["setCity"]),
+    ...mapGetters(["getArea"]),
+    goCity: function( obj ) {
+      this.$router.push(obj);
+      console.log( obj )
+      this.$store.commit("setCity", obj);
+      this.getArea(obj);
+    }
   }
 };
 </script>

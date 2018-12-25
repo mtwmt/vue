@@ -3,6 +3,7 @@
     <search-bar
       :ubike-stations="currentList"
       :ubike-area="ubikearea"
+      :ubike-city="ubikecity"
       :list="list"
       v-model="ubikearea.keyword"
     />
@@ -26,15 +27,6 @@ import pagination from '@/components/Page.vue'
 export default {
   name: 'ubike',
   components: { searchBar, pagination, ubikeList  },
-  data() {
-    return {
-      links: [
-        { cn: "台北市", en: "taipei" },
-        { cn: "新北市", en: "xinbei" },
-        { cn: "桃園市", en: "taoyuan" }
-      ]
-    };
-  },
   created(){
     this.$store.dispatch('loadTaipeiUbike');
     this.$store.dispatch('loadXinbeiUbike');
@@ -43,17 +35,15 @@ export default {
   computed: {
     currentCity(){
       // var self = this;
-      // return this.links.find(function (e) {
+      // return this.ubikecity.find(function (e) {
       //   return e.en === self.$route.params.city;
       // });
-      return this.links.find( e => e.en == this.$route.params.city );
+      return this.ubikecity.find( e => e.en == this.$route.params.city );
     },
     currentList(){
-      if( this.$route.params.city == this.currentCity.en ){
-        return this['ubike' + this.currentCity.en];
-      }
+      return this['ubike' + this.currentCity.en];
     },
-    ...mapState(['city','ubiketaipei','ubikexinbei','ubiketaoyuan','ubikearea','list','sort']),
+    ...mapState(['city','ubikecity','ubiketaipei','ubikexinbei','ubiketaoyuan','ubikearea','list','sort']),
     ...mapGetters(['getList']),
     
   },

@@ -10,6 +10,11 @@ let store = new Vuex.Store({
     ubiketaipei: [],
     ubikexinbei: [],
     ubiketaoyuan: [],
+    ubikecity: [
+      { cn: "台北市", en: "taipei" },
+      { cn: "新北市", en: "xinbei" },
+      { cn: "桃園市", en: "taoyuan" }
+    ],
     ubikearea: {
       label: '全區搜尋',
       areas: [],
@@ -39,9 +44,8 @@ let store = new Vuex.Store({
       return temp;
     },
     getArea: function (state) {
-      const city = !state.city ? 'taipei' : state.city,
-        station = state['ubike' + state.city],
-        temp = station.map(el => el.sarea);
+      const station = (!state.city) ? state.ubiketaipei : state['ubike' + state.city],
+            temp = station.map(el => el.sarea);
 
       state.ubikearea.areas = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
       state.ubikearea.areas.splice(0, 1, '全區搜尋');

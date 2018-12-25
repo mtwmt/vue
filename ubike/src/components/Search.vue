@@ -1,14 +1,34 @@
 <template>
   <div class="input-group mb-3">
+    <div class="dropdown">
+      <!-- <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="cityButton1"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >123</button> -->
+      <div class="dropdown-menu" aria-labelledby="cityButton1">
+        <a
+          class="dropdown-item"
+          href="#"
+          v-for="( link, idx) in ubikeCity"
+          :key="idx"
+          @click="goCity( link.en )"
+        >{{ link.cn }}</a>
+      </div>
+    </div>
     <div class="input-group-prepend">
       <button
+        id="areaButton"
         class="btn btn-outline-secondary dropdown-toggle"
         type="button"
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
       >{{ ubikeArea.label }}</button>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu" aria-labelledby="areaButton">
         <a
           class="dropdown-item"
           href="#"
@@ -38,30 +58,38 @@
 <script>
 export default {
   name: "searchBar",
-  props: ["ubikeStations","ubikeArea","list"],
+  props: ["ubikeCity", "ubikeStations", "ubikeArea", "list"],
+  computed: {},
+  created(){
+    console.log( 33,this.$route.params.city )
+  },
   methods: {
     setArea: function(area, keyword) {
-      const self = this; 
+      const self = this;
       // 過濾站點區 將這些區存在 self.ubikeArea.list 裡
-      self.ubikeArea.list = self.ubikeStations.filter(function( e ){
-        if( e.sarea.indexOf( area ) >= 0 ){
+      self.ubikeArea.list = self.ubikeStations.filter(function(e) {
+        if (e.sarea.indexOf(area) >= 0) {
           return e;
         }
       });
       self.ubikeArea.label = area;
-      self.list.total = (!self.ubikeArea.list.length)? self.ubikeStations: self.ubikeArea.list;
-      
-      if( self.ubikeArea.keyword.length > 0 ){
-        self.setKeyword( keyword );
+      self.list.total = !self.ubikeArea.list.length
+        ? self.ubikeStations
+        : self.ubikeArea.list;
+
+      if (self.ubikeArea.keyword.length > 0) {
+        self.setKeyword(keyword);
       }
       self.list.pagenow = 0;
     },
     setKeyword: function(key) {
       const self = this,
-            tempArr = (!self.ubikeArea.list.length) ? self.ubikeStations : self.ubikeArea.list;
-            
-      self.list.total = tempArr.filter(function( e ){
-        if( e.sna.indexOf( key ) >= 0 ){
+        tempArr = !self.ubikeArea.list.length
+          ? self.ubikeStations
+          : self.ubikeArea.list;
+
+      self.list.total = tempArr.filter(function(e) {
+        if (e.sna.indexOf(key) >= 0) {
           return e;
         }
       });
