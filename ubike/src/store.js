@@ -7,14 +7,14 @@ Vue.use(Vuex);
 let store = new Vuex.Store({
   state: {
     city: '',
-    ubiketaipei: [],
-    ubikexinbei: [],
-    ubiketaoyuan: [],
-    ubikehsinchu: [],
+    // ubiketaipei: [],
+    // ubikexinbei: [],
+    // ubiketaoyuan: [],
+    // ubikehsinchu: [],
     ubikecity: [
-      { cn: '台北市', en: 'taipei' },
-      { cn: '新北市', en: 'xinbei' },
-      { cn: '桃園市', en: 'taoyuan' },
+      { cn: '台北市', en: 'taipei',stations: '' },
+      { cn: '新北市', en: 'xinbei',stations: '' },
+      { cn: '桃園市', en: 'taoyuan',stations: '' },
       // { cn: '新竹市', en: 'hsinchu' },
     ],
     ubikearea: {
@@ -47,26 +47,37 @@ let store = new Vuex.Store({
     },
     getArea: function(state) {
       state.ubikearea.areas = state.ubikearea.areas || [];
-      const station = !state.city ? state.ubiketaipei : state['ubike' + state.city],
-        temp = station.map(el => el.sarea);
+   
 
+     
+
+      const temp = station.map(el => el.sarea);
+    
+      
       state.ubikearea.areas = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
       state.ubikearea.areas.splice(0, 1, '全區搜尋');
       state.list.total = station;
     },
   },
   mutations: {
-    setTaipeiUbike(state, data) {
-      state.ubiketaipei = data;
-    },
-    setXinbeiUbike(state, data) {
-      state.ubikexinbei = data;
-    },
-    setTaoyuanUbike(state, data) {
-      state.ubiketaoyuan = data;
-    },
-    setHsinchuUbike(state, data) {
-      state.ubikehsinchu = data;
+    // setTaipeiUbike(state, data) {
+    //   state.ubiketaipei = data;
+    // },
+    // setXinbeiUbike(state, data) {
+    //   state.ubikexinbei = data;
+    // },
+    // setTaoyuanUbike(state, data) {
+    //   state.ubiketaoyuan = data;
+    // },
+    // setHsinchuUbike(state, data) {
+    //   state.ubikehsinchu = data;
+    // },
+    setStation( state, data ){
+      state.ubikecity.filter( (e,i) => {
+        if( e.en === data.city ){
+          return state.ubikecity[i].stations =  data.stations;
+        }
+      });
     },
     setCity(state, data) {
       state.city = data;
@@ -79,7 +90,11 @@ let store = new Vuex.Store({
       axios.get('https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.gz').then(res => {
         res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
         let temp = res.filter(i => i.act === '1');
-        obj.commit('setTaipeiUbike', temp);
+        // obj.commit('setTaipeiUbike', temp);
+        obj.commit('setStation', {
+          city:'taipei',
+          stations: temp
+        });
       });
     },
     loadXinbeiUbike(obj) {
@@ -90,7 +105,11 @@ let store = new Vuex.Store({
         .then(res => {
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           let temp = res.filter(i => i.act === '1');
-          obj.commit('setXinbeiUbike', temp);
+          // obj.commit('setXinbeiUbike', temp);
+          obj.commit('setStation', {
+            city:'xinbei',
+            stations: temp
+          });
         });
     },
     loadTaoyuanUbike(obj) {
@@ -101,7 +120,11 @@ let store = new Vuex.Store({
         .then(res => {
           res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
           let temp = res.filter(i => i.act === '1');
-          obj.commit('setTaoyuanUbike', temp);
+          // obj.commit('setTaoyuanUbike', temp);
+          obj.commit('setStation', {
+            city:'taoyuan',
+            stations: temp
+          });
         });
     },
     loadHsinchuUbike(obj) {
@@ -139,10 +162,13 @@ let store = new Vuex.Store({
               }
             }
           });
-          console.log( newData )
+          // console.log( newData )
           // res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
           // let temp = res.filter(i => i.act === '1');
-          obj.commit('setHsinchuUbike', newData);
+          obj.commit('setStation', {
+            city:'hsinchu',
+            stations: newData
+          });
         });
     },
   },
