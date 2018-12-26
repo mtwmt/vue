@@ -31,6 +31,7 @@ export default {
     this.$store.dispatch('loadTaipeiUbike');
     this.$store.dispatch('loadXinbeiUbike');
     this.$store.dispatch('loadTaoyuanUbike');
+    
   },
   computed: {
     currentCity(){
@@ -43,13 +44,13 @@ export default {
     currentList(){
       return this['ubike' + this.currentCity.en];
     },
-    ...mapState(['city','ubikecity','ubiketaipei','ubikexinbei','ubiketaoyuan','ubikearea','list','sort']),
+    ...mapState(['city','ubikecity','ubiketaipei','ubikexinbei','ubiketaoyuan','ubikehsinchu','ubikearea','list','sort']),
     ...mapGetters(['getList']),
     
   },
   methods: {
-    ...mapMutations(['setTaipeiUbike','setXinbeiUbike','setTaoyuanUbike','setCity']),
-    ...mapActions(['loadTaipeiUbike','loadXinbeiUbike','loadTaoyuanUbike']),
+    ...mapMutations(['setTaipeiUbike','setXinbeiUbike','setTaoyuanUbike','setHsinchuUbike','setCity']),
+    ...mapActions(['loadTaipeiUbike','loadXinbeiUbike','loadTaoyuanUbike','loadHsinchuUbike']),
   }
 }
 </script>

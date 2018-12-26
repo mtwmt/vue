@@ -1,24 +1,6 @@
 <template>
   <div class="input-group mb-3">
-    <div class="dropdown">
-      <!-- <button
-        class="btn btn-secondary dropdown-toggle"
-        type="button"
-        id="cityButton1"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >123</button> -->
-      <div class="dropdown-menu" aria-labelledby="cityButton1">
-        <a
-          class="dropdown-item"
-          href="#"
-          v-for="( link, idx) in ubikeCity"
-          :key="idx"
-          @click="goCity( link.en )"
-        >{{ link.cn }}</a>
-      </div>
-    </div>
+    
     <div class="input-group-prepend">
       <button
         id="areaButton"
@@ -61,7 +43,6 @@ export default {
   props: ["ubikeCity", "ubikeStations", "ubikeArea", "list"],
   computed: {},
   created(){
-    console.log( 33,this.$route.params.city )
   },
   methods: {
     setArea: function(area, keyword) {

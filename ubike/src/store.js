@@ -10,10 +10,12 @@ let store = new Vuex.Store({
     ubiketaipei: [],
     ubikexinbei: [],
     ubiketaoyuan: [],
+    ubikehsinchu: [],
     ubikecity: [
-      { cn: "台北市", en: "taipei" },
-      { cn: "新北市", en: "xinbei" },
-      { cn: "桃園市", en: "taoyuan" }
+      { cn: '台北市', en: 'taipei' },
+      { cn: '新北市', en: 'xinbei' },
+      { cn: '桃園市', en: 'taoyuan' },
+      // { cn: '新竹市', en: 'hsinchu' },
     ],
     ubikearea: {
       label: '全區搜尋',
@@ -43,9 +45,10 @@ let store = new Vuex.Store({
       }
       return temp;
     },
-    getArea: function (state) {
-      const station = (!state.city) ? state.ubiketaipei : state['ubike' + state.city],
-            temp = station.map(el => el.sarea);
+    getArea: function(state) {
+      state.ubikearea.areas = state.ubikearea.areas || [];
+      const station = !state.city ? state.ubiketaipei : state['ubike' + state.city],
+        temp = station.map(el => el.sarea);
 
       state.ubikearea.areas = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
       state.ubikearea.areas.splice(0, 1, '全區搜尋');
@@ -61,6 +64,9 @@ let store = new Vuex.Store({
     },
     setTaoyuanUbike(state, data) {
       state.ubiketaoyuan = data;
+    },
+    setHsinchuUbike(state, data) {
+      state.ubikehsinchu = data;
     },
     setCity(state, data) {
       state.city = data;
@@ -89,11 +95,54 @@ let store = new Vuex.Store({
     },
     loadTaoyuanUbike(obj) {
       axios
-        .get('https://script.google.com/macros/s/AKfycbzn2V1by0BTpdXW975rnHNvX6fF6nA4SxYyMlOGjNA4EE_wtg0/exec')
+        .get(
+          'https://script.google.com/macros/s/AKfycbzn2V1by0BTpdXW975rnHNvX6fF6nA4SxYyMlOGjNA4EE_wtg0/exec'
+        )
         .then(res => {
           res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
           let temp = res.filter(i => i.act === '1');
           obj.commit('setTaoyuanUbike', temp);
+        });
+    },
+    loadHsinchuUbike(obj) {
+      axios
+        .get(
+          'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=opendata.hccg.gov.tw/dataset/1f334249-9b55-4c42-aec1-5a8a8b5e07ca/resource/4d5edb22-a15e-4097-8635-8e32f7db601a/download/20180702150422381.json'
+        )
+        .then(res => {
+          var newData = [];
+          res.data.map(function( e,i ){
+            newData[i] = {};
+            for( let item in e ){
+              switch (item) {
+                case '圖片URL':
+                  newData[i].url = e[item];
+                  break;
+                case '站點位置':
+                  newData[i].ar = e[item];
+                  break;
+                case '站點名稱':
+                  newData[i].sna = e[item];
+                  break;
+                case '經度':
+                  newData[i].lng = e[item];
+                  break;
+                case '緯度':
+                  newData[i].lat = e[item];
+                  break;
+                case '車柱數':
+                  newData[i].tot = e[item];
+                  break;
+                case '資料更新時間':
+                  newData[i].mday = e[item];
+                  break;
+              }
+            }
+          });
+          console.log( newData )
+          // res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
+          // let temp = res.filter(i => i.act === '1');
+          obj.commit('setHsinchuUbike', newData);
         });
     },
   },

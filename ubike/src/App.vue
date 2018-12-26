@@ -1,15 +1,20 @@
 <template>
   <div id="app">
     <h1>YouBike {{ currentCity.cn }}公共自行車即時資訊</h1>
-    <!-- <nav>
+    <nav>
+      <ul>
       <router-link
+        tag="li"
+        class="btn btn-outline-secondary"
+        active-class="active"
         v-for="( link, idx ) in ubikecity"
         :key="idx"
-        :to="{ path: '/'+link.en  }"
-        :click="goCity()"
-      >{{ link.cn + ' | ' }}</router-link>
-    </nav> -->
-    <div class="dropdown">
+        :to="{ path: '/'+link.en }"
+        :click="goCity"
+      >{{ link.cn }}</router-link>
+      </ul>
+    </nav>
+    <!-- <div class="dropdown">
       <button
         class="btn btn-secondary dropdown-toggle"
         type="button"
@@ -27,7 +32,7 @@
           @click="goCity( link.en )"
         >{{ link.cn }}</a>
       </div>
-    </div>
+    </div> -->
 
     <br>
     <router-view/>
@@ -48,23 +53,24 @@ export default {
         }
       });
       return temp;
+    },
+    goCity(){
+      this.$store.commit("setCity", this.currentCity.en);
+      this.getArea(this.currentCity.en);
     }
   },
   created() {},
   methods: {
     ...mapMutations(["setCity"]),
     ...mapGetters(["getArea"]),
-    goCity: function( obj ) {
-      this.$router.push(obj);
-      console.log( obj )
-      this.$store.commit("setCity", obj);
-      this.getArea(obj);
-    }
   }
 };
 </script>
-<style>
+<style lang="scss">
 body {
   padding: 1rem;
+}
+ul>li{
+  margin: 0.5rem 0.5rem 0 0;
 }
 </style>

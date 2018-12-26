@@ -30,7 +30,6 @@
     </table>
   </div>
 </template>
-
 <script>
 export default {
   name: "ubikeList",
