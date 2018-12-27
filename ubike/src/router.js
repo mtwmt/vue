@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import taipei from './views/Taipei.vue'
-import xinbei from './views/Xinbei.vue'
-import taoyuan from './views/Taoyuan.vue'
 import ubike from './views/Ubike.vue';
 
 Vue.use(Router)

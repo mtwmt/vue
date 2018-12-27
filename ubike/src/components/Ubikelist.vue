@@ -66,10 +66,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-th,
-td {
-  white-space: nowrap;
-}
+// th,
+// td {
+//   white-space: nowrap;
+// }
 @media screen and (max-width: 639px) {
   .tbl-hidden {
     display: none;

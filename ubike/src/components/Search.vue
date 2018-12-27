@@ -1,6 +1,5 @@
 <template>
   <div class="input-group mb-3">
-    
     <div class="input-group-prepend">
       <button
         id="areaButton"

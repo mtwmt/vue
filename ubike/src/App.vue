@@ -7,7 +7,7 @@
         tag="li"
         class="btn btn-outline-secondary"
         active-class="active"
-        v-for="( link, idx ) in ubikecity"
+        v-for="( link, key, idx ) in ubikecity"
         :key="idx"
         :to="{ path: '/'+link.en }"
         :click="goCity"
@@ -46,13 +46,9 @@ export default {
     ...mapState(["city", "ubikecity"]),
     currentCity: function() {
       const self = this;
-      let temp = {};
-      self.ubikecity.find(function(e) {
-        if ("/" + e.en == self.$route.path) {
-          temp = e;
-        }
-      });
-      return temp;
+      let temp = self.$route.path.split('/')[1];
+    
+      return self.ubikecity[temp];
     },
     goCity(){
       this.$store.commit("setCity", this.currentCity.en);

@@ -1,7 +1,7 @@
 <template>
   <div>
     <search-bar
-      :ubike-stations="currentCity.stations"
+      :ubike-stations="ubikecity[city].stations"
       :ubike-area="ubikearea"
       :ubike-city="ubikecity"
       :list="list"
@@ -32,27 +32,14 @@ export default {
     this.$store.dispatch('loadXinbeiUbike');
     this.$store.dispatch('loadTaoyuanUbike');
     // this.$store.dispatch('loadHsinchuUbike');
-  
-    
   },
   computed: {
-    currentCity(){
-      // var self = this;
-      // return this.ubikecity.find(function (e) {
-      //   return e.en === self.$route.params.city;
-      // });
-      return this.ubikecity.find( e => e.en == this.$route.params.city );
-    },
-    currentList(){
-      // return this['ubike' + this.currentCity.en];
-      
-    },
-    ...mapState(['city','ubikecity','ubiketaipei','ubikexinbei','ubiketaoyuan','ubikehsinchu','ubikearea','list','sort']),
-    ...mapGetters(['getList']),
+    ...mapState(['city','ubikecity','ubikearea','list','sort']),
+    ...mapGetters(['getList','getArea']),
     
   },
   methods: {
-    ...mapMutations(['setStation','setTaipeiUbike','setXinbeiUbike','setTaoyuanUbike','setHsinchuUbike','setCity']),
+    ...mapMutations(['setStation','setCity']),
     ...mapActions(['loadTaipeiUbike','loadXinbeiUbike','loadTaoyuanUbike','loadHsinchuUbike']),
   }
 }
