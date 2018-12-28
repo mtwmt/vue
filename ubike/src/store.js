@@ -23,6 +23,11 @@ let store = new Vuex.Store({
         cn: '桃園市',
         stations: ''
       },
+      'taichung': { 
+        en: 'taichung' ,
+        cn: '台中',
+        stations: ''
+      },
     },
     ubikearea: {
       label: '全區搜尋',
@@ -158,6 +163,63 @@ let store = new Vuex.Store({
           });
         });
     },
+    loadTaichungUbike(obj){
+      axios
+        .get(
+          'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=e-traffic.taichung.gov.tw/DataAPI/api/YoubikeAllAPI'
+        )
+        .then(res => {
+          var newData = [];
+          res.data.map(function( e,i ){
+            newData[i] = {};
+            for( let item in e ){
+              switch (item) {
+                case 'ID':
+                  newData[i].sno = e[item];
+                  break;
+                case 'Position':
+                  newData[i].sna = e[item];
+                  break;
+                case 'EName':
+                  newData[i].snaen = e[item];
+                  break;
+                case 'CArea':
+                  newData[i].sarea = e[item];
+                  break;
+                case 'EArea':
+                  newData[i].sareaen = e[item];
+                  break;
+                case 'X':
+                  newData[i].lng = e[item];
+                  break;
+                case 'Y':
+                  newData[i].lat = e[item];
+                  break;
+                case 'UpdateTime':
+                  newData[i].mday = e[item];
+                  break;
+                case 'CAddress':
+                  newData[i].ar = e[item];
+                  break;
+                case 'EAddress':
+                  newData[i].aren = e[item];
+                  break;
+                case 'EmpCNT':
+                  newData[i].tot = e[item];
+                  break;
+                case 'AvailableCNT':
+                  newData[i].sbi = e[item];
+                  break;
+              }
+            }
+          });
+          // let temp = res.filter(i => i.act === '1');
+          obj.commit('setStation', {
+            city:'taichung',
+            stations: newData
+          });
+        });
+    }
   },
 });
 

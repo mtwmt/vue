@@ -37,6 +37,8 @@ export default {
   computed: {},
   filters: {
     timeFormat(t) {
+      if( t.length > 14 ) return t;
+      
       var date = [],
         time = [];
       date.push(t.substr(0, 4));

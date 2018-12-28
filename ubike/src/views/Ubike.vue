@@ -31,6 +31,8 @@ export default {
     this.$store.dispatch('loadTaipeiUbike');
     this.$store.dispatch('loadXinbeiUbike');
     this.$store.dispatch('loadTaoyuanUbike');
+    this.$store.dispatch('loadTaichungUbike');
+    
     // this.$store.dispatch('loadHsinchuUbike');
   },
   computed: {
@@ -40,7 +42,7 @@ export default {
   },
   methods: {
     ...mapMutations(['setStation','setCity']),
-    ...mapActions(['loadTaipeiUbike','loadXinbeiUbike','loadTaoyuanUbike','loadHsinchuUbike']),
+    ...mapActions(['loadTaipeiUbike','loadXinbeiUbike','loadTaoyuanUbike','loadHsinchuUbike','loadTaichungUbike']),
   }
 }
 </script>
