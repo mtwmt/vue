@@ -1,9 +1,8 @@
 <template>
-  <div class="table-responsive">
-    <table class="table table-striped">
+  <table class="table table-striped">
       <thead>
         <tr>
-          <!-- <th>#</th> -->
+          <th>#</th>
           <th>場站名稱</th>
           <th>場站區域</th>
           <th @click="setSort('sbi')">
@@ -18,8 +17,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(s,i) in setList" :key="i">
-          <!-- <td>{{ s.sno }}</td> -->
+        <tr 
+          v-for="(s,i) in filterRow.slice( (page.pagenow - 1)* page.viewlimit, ((page.pagenow - 1) * page.viewlimit) + page.viewlimit )" 
+          :key="i" 
+        >
+          <td>{{ s.sno }}</td>
           <td>{{ s.sna }}</td>
           <td>{{ s.sarea }}</td>
           <td>{{ s.sbi }}</td>
@@ -28,17 +30,23 @@
         </tr>
       </tbody>
     </table>
-  </div>
 </template>
+
 <script>
 export default {
-  name: "ubikeList",
-  props: ["list", "sort", "setList"],
-  computed: {},
+  name: 'ubikeList',
+  props: ['data','area','page'],
+  data(){
+    return {
+      sort: {
+        sbi: '',
+        tot: ''
+      }
+    }
+  },
   filters: {
     timeFormat(t) {
       if( t.length > 14 ) return t;
-      
       var date = [],
         time = [];
       date.push(t.substr(0, 4));
@@ -48,23 +56,38 @@ export default {
       time.push(t.substr(10, 2));
       time.push(t.substr(12, 2));
       return date.join("/") + " " + time.join(":");
+    },
+  },
+  computed:{
+    filterRow(){
+      const _self = this;
+      let tempArr = [];
+
+      tempArr = _self.data.stations.filter(function( e ){
+        if( e.sarea.indexOf( _self.area.label ) >= 0 ){
+          return e;
+        }
+      });
+      
+      console.log( tempArr )
+      return (!tempArr.length) ? _self.data.stations : tempArr;
     }
   },
   methods: {
-    setSort(obj) {
-      const self = this;
-      let list,
-        tempArr = self.list.total;
-      if (self.sort[obj] === "less") {
-        self.sort[obj] = "";
-        list = tempArr.sort((a, b) => a[obj] - b[obj]);
+    setSort( obj ){
+      const _self = this;
+      if (_self.sort[obj] === "less") {
+        _self.sort[obj] = "";
+        return _self.data.stations.sort((a, b) => a[obj] - b[obj]);
+
       } else {
-        self.sort[obj] = "less";
-        list = tempArr.sort((a, b) => b[obj] - a[obj]);
+        _self.sort[obj] = "less";
+        return _self.data.stations.sort((a, b) => b[obj] - a[obj]);
+
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

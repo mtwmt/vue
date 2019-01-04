@@ -1,19 +1,21 @@
 <template>
-  <nav aria-label="Page navigation" v-if="page.pagetotal > 1">
+  <nav aria-label="Page navigation">
     <ul class="pagination justify-content-end">
       <li class="page-item">
-        <a class="page-link" @click="setlist( pagePrev)" href="#" aria-label="Previous">
+        <a class="page-link" 
+          @click="setPage( pagePrev )" href="#" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
           <span class="sr-only">Previous</span>
         </a>
       </li>
-      <li :class="(pg === pageNow )? 'page-item active': 'page-item'" 
-        v-for="(pg, i) in setPage( page.pagenow + 1 )"
-        :key="i"
-        @click="setlist( pg-1 )"
+      <li
+        v-for="(pg, idx) in countOfPage"
+        :key="idx"
+        :class="pg === page.pagenow ? 'page-item active': 'page-item'"
+        @click="setPage( pg )"
       ><a class="page-link" href="#">{{ pg }}</a></li>
       <li class="page-item">
-        <a class="page-link" @click="setlist( pageNext)" href="#" aria-label="Next">
+        <a class="page-link" @click="setPage( pageNext)" href="#" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
           <span class="sr-only">Next</span>
         </a>
@@ -25,48 +27,33 @@
 <script>
 export default {
   name: 'pagination',
-  props: ['page'],
-  computed: {
-    pageTotal: function(){
-      // 偵聽當下有幾頁
-      return this.setPage();
+  props: ['rows','page'],
+  computed:{
+    pageTotal(){
+      return Math.ceil(this.rows.length / this.page.viewlimit);
     },
-    pageNow: function(){
-      return this.page.pagenow + 1;
-    },
-    pagePrev: function(){
-      return (this.page.pagenow <= 0)? this.page.pagenow : (this.page.pagenow - 1);
-    },
-    pageNext: function(){
-      return  (this.pageNow === this.page.pagetotal )? this.page.pagetotal - 1  : this.page.pagenow + 1;
-    }
-  },
-  watch: {
-    pageTotal: function(){}
-  },
-  methods: {
-    setPage: function( num ){
-      const self = this;
-      let currentPage = num || 1,
-          pLimit = self.page.pagelimit,
-          totalPage = parseInt( self.page.total.length / self.page.viewlimit );  //總頁數
+    countOfPage(){
+      const _self = this;
 
-      totalPage = (totalPage % self.page.viewlimit == 1) ? totalPage: totalPage + 1;
-      
-      self.page.pagetotal =  totalPage;
-      
-      var tempArr = [],
-          start = (currentPage - ((currentPage - 1) % pLimit)),
-          limit = Math.min(  (currentPage - ((currentPage - 1) % pLimit) + (pLimit - 1) ) ,totalPage);
+      let start = _self.page.pagenow - ((_self.page.pagenow - 1) % _self.page.pagelimit),
+          limit = Math.min(start + (_self.page.pagelimit - 1) ,this.pageTotal),
+          tempArr = [];
 
-      for( start; start <= limit ; start++ ){
+      for( start; start <= limit; start++ ){
         tempArr.push( start );
       }
-      return tempArr;
+      return tempArr;    
     },
-    setlist: function( num ){
-      const self = this;
-      self.page.pagenow = num;
+    pagePrev(){
+      return Math.max(this.page.pagenow - 1, 1);
+    },
+    pageNext(){
+      return Math.min(this.page.pagenow + 1, this.pageTotal);
+    }
+  },
+  methods:{
+    setPage( num ){
+      return this.page.pagenow = num;
     }
   }
 }

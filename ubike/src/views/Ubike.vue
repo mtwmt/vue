@@ -1,19 +1,17 @@
 <template>
   <div>
     <search-bar
-      :ubike-stations="ubikecity[city].stations"
-      :ubike-area="ubikearea"
-      :ubike-city="ubikecity"
-      :list="list"
-      v-model="ubikearea.keyword"
+      :data="loadStation"
+      :area="ubikearea"
     />
     <ubike-list 
-      :list="list"
-      :sort="sort"
-      :setList="getList"
+      :data="loadStation"
+      :area="ubikearea"
+      :page="page"
     />
     <pagination 
-      :page="list"
+      :rows="loadStation.stations"
+      :page="page"
     />
   </div>
 </template>
@@ -27,22 +25,34 @@ import pagination from '@/components/Page.vue'
 export default {
   name: 'ubike',
   components: { searchBar, pagination, ubikeList  },
+  data(){
+    return {
+      page:{
+        pagenow: 1,
+        viewlimit: 10,
+        pagelimit: 5,
+      },
+      ubikearea:{
+        label: '全區搜尋'
+      }
+    }
+  },
   created(){
-    this.$store.dispatch('loadTaipeiUbike');
-    this.$store.dispatch('loadXinbeiUbike');
-    this.$store.dispatch('loadTaoyuanUbike');
-    this.$store.dispatch('loadTaichungUbike');
-    
-    // this.$store.dispatch('loadHsinchuUbike');
+    this.$store.dispatch('load'+ this.city +'Ubike');
   },
-  computed: {
-    ...mapState(['city','ubikecity','ubikearea','list','sort']),
-    ...mapGetters(['getList','getArea']),
-    
+  computed:{
+    ...mapState(['city','ubikecity']),
+    loadStation(){
+      const _self = this;
+      _self.$store.dispatch('load'+ _self.city +'Ubike');
+      _self.page.pagenow = 1;
+      return _self.ubikecity[_self.city];
+    },
   },
-  methods: {
-    ...mapMutations(['setStation','setCity']),
-    ...mapActions(['loadTaipeiUbike','loadXinbeiUbike','loadTaoyuanUbike','loadHsinchuUbike','loadTaichungUbike']),
+  methods:{
+    // loadStation(){
+    //   this.$store.dispatch('load'+ this.city +'Ubike');
+    // }
   }
 }
 </script>

@@ -11,87 +11,87 @@ let store = new Vuex.Store({
       'taipei': { 
         en: 'taipei' ,
         cn: '台北市',
-        stations: ''
+        stations: []
       },
       'xinbei': { 
         en: 'xinbei' ,
         cn: '新北市',
-        stations: ''
+        stations: []
       },
       'taoyuan': { 
         en: 'taoyuan' ,
         cn: '桃園市',
-        stations: ''
+        stations: []
       },
       'taichung': { 
         en: 'taichung' ,
         cn: '台中',
-        stations: ''
+        stations: []
       },
-    },
-    ubikearea: {
-      label: '全區搜尋',
-      areas: [],
-      list: [],
-      keyword: '',
-    },
-    list: {
-      total: [],
-      viewlimit: 10,
-      pagelimit: 5,
-      pagenow: 0,
-      pagetotal: '',
-    },
-    sort: {
-      sbi: '',
-      tot: '',
-    },
+    }
+    // ubikearea: {
+    //   label: '全區搜尋',
+    //   areas: [],
+    //   list: [],
+    //   keyword: '',
+    // },
+    // list: {
+    //   total: [],
+    //   viewlimit: 10,
+    //   pagelimit: 5,
+    //   pagenow: 0,
+    //   pagetotal: '',
+    // },
+    // sort: {
+    //   sbi: '',
+    //   tot: '',
+    // },
   },
   getters: {
-    getList: function(state) {
-      var temp = [],
-        start = state.list.pagenow * state.list.viewlimit,
-        limit = Math.min(start + state.list.viewlimit, state.list.total.length);
-      for (start; start < limit; start++) {
-        temp.push(state.list.total[start]);
-      }
-      return temp;
-    },
-    getArea: function(state) {
-      state.ubikearea.areas = state.ubikearea.areas || [];
-      let station = (!state.city ) ? state.ubikecity.taipei.stations : state.ubikecity[state.city].stations;
-      let temp = [];
+    // getList: function(state) {
+    //   var temp = [],
+    //     start = state.list.pagenow * state.list.viewlimit,
+    //     limit = Math.min(start + state.list.viewlimit, state.list.total.length);
+    //   for (start; start < limit; start++) {
+    //     temp.push(state.list.total[start]);
+    //   }
+    //   return temp;
+    // },
+    // getArea: function(state) {
+    //   state.ubikearea.areas = state.ubikearea.areas || [];
+    //   let station = (!state.city ) ? state.ubikecity.taipei.stations : state.ubikecity[state.city].stations;
+    //   let temp = [];
       
-      if( !station.length ) return;
-      temp = station.map( e => e.sarea );
+    //   if( !station.length ) return;
+    //   temp = station.map( e => e.sarea );
 
-      state.ubikearea.areas = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
-      state.ubikearea.areas.splice(0, 1, '全區搜尋');
-      state.list.total = station;
-    }
+    //   state.ubikearea.areas = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
+    //   state.ubikearea.areas.splice(0, 1, '全區搜尋');
+    //   state.list.total = station;
+    // }
   },
   mutations: {
     setStation( state, data ){
-      return state.ubikecity[data.city].stations =  data.stations;
+      return state.ubikecity[data.city].stations = data.stations;
     },
     setCity(state, data) {
-      state.city = data;
-      state.ubikearea.keyword = '';
-      state.ubikearea.label = '全區搜尋';
+      // state.ubikearea.keyword = '';
+      // state.ubikearea.label = '全區搜尋';
+      return state.city = data;
     },
   },
   actions: {
-    loadTaipeiUbike(obj) {
+    loadtaipeiUbike(obj) {
       axios.get('https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.gz').then(res => {
         res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
         let temp = res.filter(i => i.act === '1');
         obj.commit('setStation', {
           city:'taipei',
-          stations: temp
+          stations: temp,
         });
       });
     },
-    loadXinbeiUbike(obj) {
+    loadxinbeiUbike(obj) {
       axios
         .get(
           'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000352-001'
@@ -105,7 +105,7 @@ let store = new Vuex.Store({
           });
         });
     },
-    loadTaoyuanUbike(obj) {
+    loadtaoyuanUbike(obj) {
       axios
         .get(
           'https://script.google.com/macros/s/AKfycbzn2V1by0BTpdXW975rnHNvX6fF6nA4SxYyMlOGjNA4EE_wtg0/exec'
@@ -119,7 +119,7 @@ let store = new Vuex.Store({
           });
         });
     },
-    loadHsinchuUbike(obj) {
+    loadhsinchuUbike(obj) {
       axios
         .get(
           'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=opendata.hccg.gov.tw/dataset/1f334249-9b55-4c42-aec1-5a8a8b5e07ca/resource/4d5edb22-a15e-4097-8635-8e32f7db601a/download/20180702150422381.json'
@@ -163,7 +163,7 @@ let store = new Vuex.Store({
           });
         });
     },
-    loadTaichungUbike(obj){
+    loadtaichungUbike(obj){
       axios
         .get(
           'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=e-traffic.taichung.gov.tw/DataAPI/api/YoubikeAllAPI'

@@ -8,14 +8,14 @@
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
-      >{{ ubikeArea.label }}</button>
+      >{{ area.label }}</button>
       <div class="dropdown-menu" aria-labelledby="areaButton">
         <a
           class="dropdown-item"
           href="#"
-          v-for="(area, idx) in ubikeArea.areas"
-          :key="idx"
-          @click="setArea( area, ubikeArea.keyword)"
+          v-for="( area, idx ) in ubikeArea"
+          :key = idx
+          @click="setArea( area )"
         >{{ area }}</a>
       </div>
     </div>
@@ -23,12 +23,9 @@
       type="search"
       class="form-control"
       aria-label="Text input with dropdown button"
-      :value="ubikeArea.keyword"
-      @input="$emit('input',$event.target.value)"
     >
     <div class="input-group-append">
       <button
-        @click="setKeyword(ubikeArea.keyword)"
         class="btn btn-outline-secondary"
         type="button"
       >Search</button>
@@ -39,45 +36,29 @@
 <script>
 export default {
   name: "searchBar",
-  props: ["ubikeCity", "ubikeStations", "ubikeArea", "list"],
-  computed: {},
-  created(){
-  },
-  methods: {
-    setArea: function(area, keyword) {
-      const self = this;
-      // 過濾站點區 將這些區存在 self.ubikeArea.list 裡
-      self.ubikeArea.list = self.ubikeStations.filter(function(e) {
-        if (e.sarea.indexOf(area) >= 0) {
-          return e;
-        }
-      });
-      self.ubikeArea.label = area;
-      self.list.total = !self.ubikeArea.list.length
-        ? self.ubikeStations
-        : self.ubikeArea.list;
-
-      if (self.ubikeArea.keyword.length > 0) {
-        self.setKeyword(keyword);
-      }
-      self.list.pagenow = 0;
+  props: ['data','area'],
+  // data(){
+  //   return {
+  //     label: '全區搜尋'
+  //   }
+  // },
+  computed:{
+    ubikeArea(){
+      const _self = this;
+      let temp = [];
+      temp = _self.data.stations.map( e => e.sarea );
+      temp = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
+      return ['全區搜尋',...temp];
     },
-    setKeyword: function(key) {
-      const self = this,
-        tempArr = !self.ubikeArea.list.length
-          ? self.ubikeStations
-          : self.ubikeArea.list;
-
-      self.list.total = tempArr.filter(function(e) {
-        if (e.sna.indexOf(key) >= 0) {
-          return e;
-        }
-      });
-      self.list.pagenow = 0;
+  },
+  methods:{
+    setArea( area ){
+      return this.area.label = area;
     }
   }
-};
+}
 </script>
 
 <style>
+
 </style>

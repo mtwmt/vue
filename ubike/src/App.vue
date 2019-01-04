@@ -14,26 +14,6 @@
       >{{ link.cn }}</router-link>
       </ul>
     </nav>
-    <!-- <div class="dropdown">
-      <button
-        class="btn btn-secondary dropdown-toggle"
-        type="button"
-        id="cityButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >{{ currentCity.cn }}</button>
-      <div class="dropdown-menu" aria-labelledby="cityButton">
-        <a
-          class="dropdown-item"
-          href="#"
-          v-for="( link, idx ) in ubikecity"
-          :key="idx"
-          @click="goCity( link.en )"
-        >{{ link.cn }}</a>
-      </div>
-    </div> -->
-
     <br>
     <router-view/>
   </div>
@@ -47,15 +27,15 @@ export default {
     currentCity: function() {
       const self = this;
       let temp = self.$route.path.split('/')[1];
-    
       return self.ubikecity[temp];
     },
     goCity(){
       this.$store.commit("setCity", this.currentCity.en);
-      this.getArea(this.currentCity.en);
     }
   },
-  created() {},
+  created() {
+    
+  },
   methods: {
     ...mapMutations(["setCity"]),
     ...mapGetters(["getArea"]),
