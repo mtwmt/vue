@@ -3,14 +3,16 @@
     <search-bar
       :data="loadStation"
       :area="ubikearea"
+      :page="page"
     />
+    <div class="loading" v-if="isLoading">加載中 請稍後...</div>
     <ubike-list 
+      v-else
       :data="loadStation"
       :area="ubikearea"
       :page="page"
     />
     <pagination 
-      :rows="loadStation.stations"
       :page="page"
     />
   </div>
@@ -31,32 +33,42 @@ export default {
         pagenow: 1,
         viewlimit: 10,
         pagelimit: 5,
+        filterdata: []
       },
       ubikearea:{
-        label: '全區搜尋'
+        label: '全區搜尋',
+        keyword: ''
       }
     }
   },
   created(){
-    this.$store.dispatch('load'+ this.city +'Ubike');
   },
   computed:{
-    ...mapState(['city','ubikecity']),
+    ...mapState(['isLoading','ubikecity']),
     loadStation(){
-      const _self = this;
-      _self.$store.dispatch('load'+ _self.city +'Ubike');
+      const _self = this,
+            routeCity = _self.$route.params.city;
+            
       _self.page.pagenow = 1;
-      return _self.ubikecity[_self.city];
+      _self.page.filterdata = [];
+      _self.ubikearea.label = '全區搜尋';
+      _self.ubikearea.keyword = '';
+
+      // 資料載入後 移除loading
+      if( _self.ubikecity[routeCity].stations.length > 0 ){
+        _self.$store.commit('loadStatus',false);
+      }
+
+      return _self.ubikecity[routeCity];
     },
   },
-  methods:{
-    // loadStation(){
-    //   this.$store.dispatch('load'+ this.city +'Ubike');
-    // }
-  }
+  methods:{}
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+  .loading{
+    margin-top: 50px;
+    text-align: center;
+  }
 </style>

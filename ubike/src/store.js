@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 let store = new Vuex.Store({
   state: {
-    city: '',
+    isLoading: true,
     ubikecity: {
       'taipei': { 
         en: 'taipei' ,
@@ -29,56 +29,16 @@ let store = new Vuex.Store({
         stations: []
       },
     }
-    // ubikearea: {
-    //   label: '全區搜尋',
-    //   areas: [],
-    //   list: [],
-    //   keyword: '',
-    // },
-    // list: {
-    //   total: [],
-    //   viewlimit: 10,
-    //   pagelimit: 5,
-    //   pagenow: 0,
-    //   pagetotal: '',
-    // },
-    // sort: {
-    //   sbi: '',
-    //   tot: '',
-    // },
   },
   getters: {
-    // getList: function(state) {
-    //   var temp = [],
-    //     start = state.list.pagenow * state.list.viewlimit,
-    //     limit = Math.min(start + state.list.viewlimit, state.list.total.length);
-    //   for (start; start < limit; start++) {
-    //     temp.push(state.list.total[start]);
-    //   }
-    //   return temp;
-    // },
-    // getArea: function(state) {
-    //   state.ubikearea.areas = state.ubikearea.areas || [];
-    //   let station = (!state.city ) ? state.ubikecity.taipei.stations : state.ubikecity[state.city].stations;
-    //   let temp = [];
-      
-    //   if( !station.length ) return;
-    //   temp = station.map( e => e.sarea );
-
-    //   state.ubikearea.areas = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
-    //   state.ubikearea.areas.splice(0, 1, '全區搜尋');
-    //   state.list.total = station;
-    // }
   },
   mutations: {
     setStation( state, data ){
       return state.ubikecity[data.city].stations = data.stations;
     },
-    setCity(state, data) {
-      // state.ubikearea.keyword = '';
-      // state.ubikearea.label = '全區搜尋';
-      return state.city = data;
-    },
+    loadStatus( state,data ){
+      return state.isLoading = data;
+    }
   },
   actions: {
     loadtaipeiUbike(obj) {

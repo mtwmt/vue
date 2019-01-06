@@ -13,21 +13,23 @@
         <a
           class="dropdown-item"
           href="#"
-          v-for="( area, idx ) in ubikeArea"
+          v-for="( item, idx ) in ubikeArea"
           :key = idx
-          @click="setArea( area )"
-        >{{ area }}</a>
+          @click="filterArea( item, area.keyword )"
+        >{{ item }}</a>
       </div>
     </div>
     <input
       type="search"
       class="form-control"
       aria-label="Text input with dropdown button"
+      v-model="area.keyword"
     >
     <div class="input-group-append">
       <button
         class="btn btn-outline-secondary"
         type="button"
+        @click="filterArea( area.label,area.keyword )"
       >Search</button>
     </div>
   </div>
@@ -36,12 +38,7 @@
 <script>
 export default {
   name: "searchBar",
-  props: ['data','area'],
-  // data(){
-  //   return {
-  //     label: '全區搜尋'
-  //   }
-  // },
+  props: ['data','area','page'],
   computed:{
     ubikeArea(){
       const _self = this;
@@ -52,8 +49,20 @@ export default {
     },
   },
   methods:{
-    setArea( area ){
-      return this.area.label = area;
+    filterArea( area,keyword ){
+      const _self = this;
+      _self.page.pagenow = 1;
+      _self.area.label = area;
+      let tempArr = [];
+      tempArr = _self.data.stations.filter(function( e ){
+        if( e.sarea.indexOf( area ) >= 0 ){
+          return e;
+        }
+      });
+      tempArr = (!tempArr.length) ? _self.data.stations : tempArr;
+      tempArr = tempArr.filter( e => e.sna.indexOf(keyword) >= 0 );
+    
+      return _self.page.filterdata = tempArr;
     }
   }
 }

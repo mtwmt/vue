@@ -60,17 +60,7 @@ export default {
   },
   computed:{
     filterRow(){
-      const _self = this;
-      let tempArr = [];
-
-      tempArr = _self.data.stations.filter(function( e ){
-        if( e.sarea.indexOf( _self.area.label ) >= 0 ){
-          return e;
-        }
-      });
-      
-      console.log( tempArr )
-      return (!tempArr.length) ? _self.data.stations : tempArr;
+      return this.page.filterdata = (!this.page.filterdata.length) ? this.data.stations : this.page.filterdata;
     }
   },
   methods: {
@@ -78,11 +68,11 @@ export default {
       const _self = this;
       if (_self.sort[obj] === "less") {
         _self.sort[obj] = "";
-        return _self.data.stations.sort((a, b) => a[obj] - b[obj]);
+        return _self.filterRow.sort((a, b) => a[obj] - b[obj]);
 
       } else {
         _self.sort[obj] = "less";
-        return _self.data.stations.sort((a, b) => b[obj] - a[obj]);
+        return _self.filterRow.sort((a, b) => b[obj] - a[obj]);
 
       }
     }

@@ -10,7 +10,6 @@
         v-for="( link, key, idx ) in ubikecity"
         :key="idx"
         :to="{ path: '/'+link.en }"
-        :click="goCity"
       >{{ link.cn }}</router-link>
       </ul>
     </nav>
@@ -23,22 +22,18 @@ import { mapState, mapMutations, mapGetters } from "vuex";
 export default {
   name: "app",
   computed: {
-    ...mapState(["city", "ubikecity"]),
+    ...mapState(['ubikecity']),
     currentCity: function() {
       const self = this;
       let temp = self.$route.path.split('/')[1];
       return self.ubikecity[temp];
-    },
-    goCity(){
-      this.$store.commit("setCity", this.currentCity.en);
     }
   },
   created() {
-    
   },
   methods: {
-    ...mapMutations(["setCity"]),
-    ...mapGetters(["getArea"]),
+    // ...mapMutations(["setStation"]),
+    // ...mapGetters(["initLoad"]),
   }
 };
 </script>

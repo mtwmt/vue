@@ -12,8 +12,21 @@ Vue.config.productionTip = false;
 
 // store.dispatch('loadData');
 // store.dispatch('loadTaipeiUbike');
+router.beforeEach(function (to, from, next) {
+  store.commit('loadStatus', true);
+  next()
+})
+
+router.afterEach(function (to) {
+  store.dispatch('load'+ to.params.city +'Ubike');
+})
+
+
+
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+

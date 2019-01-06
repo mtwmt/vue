@@ -1,7 +1,7 @@
 <template>
-  <nav aria-label="Page navigation">
+  <nav aria-label="Page navigation" v-if="countOfPage.length > 1">
     <ul class="pagination justify-content-end">
-      <li class="page-item">
+      <li class="page-item" v-if="page.pagenow !== 1">
         <a class="page-link" 
           @click="setPage( pagePrev )" href="#" aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
@@ -14,7 +14,7 @@
         :class="pg === page.pagenow ? 'page-item active': 'page-item'"
         @click="setPage( pg )"
       ><a class="page-link" href="#">{{ pg }}</a></li>
-      <li class="page-item">
+      <li class="page-item" v-if="page.pagenow !== pageTotal">
         <a class="page-link" @click="setPage( pageNext)" href="#" aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
           <span class="sr-only">Next</span>
@@ -27,18 +27,16 @@
 <script>
 export default {
   name: 'pagination',
-  props: ['rows','page'],
+  props: ['page'],
   computed:{
     pageTotal(){
-      return Math.ceil(this.rows.length / this.page.viewlimit);
+      return Math.ceil(this.page.filterdata.length / this.page.viewlimit);
     },
     countOfPage(){
       const _self = this;
-
       let start = _self.page.pagenow - ((_self.page.pagenow - 1) % _self.page.pagelimit),
           limit = Math.min(start + (_self.page.pagelimit - 1) ,this.pageTotal),
           tempArr = [];
-
       for( start; start <= limit; start++ ){
         tempArr.push( start );
       }
