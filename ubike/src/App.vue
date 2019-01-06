@@ -3,14 +3,14 @@
     <h1>YouBike {{ currentCity.cn }}公共自行車即時資訊</h1>
     <nav>
       <ul>
-      <router-link
-        tag="li"
-        class="btn btn-outline-secondary"
-        active-class="active"
-        v-for="( link, key, idx ) in ubikecity"
-        :key="idx"
-        :to="{ path: '/'+link.en }"
-      >{{ link.cn }}</router-link>
+        <router-link
+          tag="li"
+          class="btn btn-outline-secondary"
+          active-class="active"
+          v-for="( link, key, idx ) in ubikecity"
+          :key="idx"
+          :to="{ path: '/'+link.en }"
+        >{{ link.cn }}</router-link>
       </ul>
     </nav>
     <br>
@@ -22,15 +22,14 @@ import { mapState, mapMutations, mapGetters } from "vuex";
 export default {
   name: "app",
   computed: {
-    ...mapState(['ubikecity']),
+    ...mapState(["ubikecity"]),
     currentCity: function() {
       const self = this;
-      let temp = self.$route.path.split('/')[1];
+      let temp = self.$route.path.split("/")[1];
       return self.ubikecity[temp];
     }
   },
-  created() {
-  },
+  created() {},
   methods: {
     // ...mapMutations(["setStation"]),
     // ...mapGetters(["initLoad"]),
@@ -41,7 +40,7 @@ export default {
 body {
   padding: 1rem;
 }
-ul>li{
+ul > li {
   margin: 0.5rem 0.5rem 0 0;
 }
 </style>

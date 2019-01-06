@@ -1,52 +1,52 @@
 <template>
   <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>場站名稱</th>
-          <th>場站區域</th>
-          <th @click="setSort('sbi')">
-            可用車輛
-            <i :class="!sort.sbi ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"></i>
-          </th>
-          <th @click="setSort('tot')">
-            總停車格
-            <i :class="!sort.tot ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"></i>
-          </th>
-          <th class="tbl-hidden">資料更新時間</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr 
-          v-for="(s,i) in filterRow.slice( (page.pagenow - 1)* page.viewlimit, ((page.pagenow - 1) * page.viewlimit) + page.viewlimit )" 
-          :key="i" 
-        >
-          <td>{{ s.sno }}</td>
-          <td>{{ s.sna }}</td>
-          <td>{{ s.sarea }}</td>
-          <td>{{ s.sbi }}</td>
-          <td>{{ s.tot }}</td>
-          <td class="tbl-hidden">{{ s.mday | timeFormat }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>場站名稱</th>
+        <th>場站區域</th>
+        <th @click="setSort('sbi')">
+          可用車輛
+          <i :class="!sort.sbi ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"></i>
+        </th>
+        <th @click="setSort('tot')">
+          總停車格
+          <i :class="!sort.tot ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"></i>
+        </th>
+        <th class="tbl-hidden">資料更新時間</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="(s,i) in filterRow.slice( (page.pagenow - 1)* page.viewlimit, ((page.pagenow - 1) * page.viewlimit) + page.viewlimit )"
+        :key="i"
+      >
+        <td>{{ s.sno }}</td>
+        <td>{{ s.sna }}</td>
+        <td>{{ s.sarea }}</td>
+        <td>{{ s.sbi }}</td>
+        <td>{{ s.tot }}</td>
+        <td class="tbl-hidden">{{ s.mday | timeFormat }}</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
 export default {
-  name: 'ubikeList',
-  props: ['data','area','page'],
-  data(){
+  name: "ubikeList",
+  props: ["data", "area", "page"],
+  data() {
     return {
       sort: {
-        sbi: '',
-        tot: ''
+        sbi: "",
+        tot: ""
       }
-    }
+    };
   },
   filters: {
     timeFormat(t) {
-      if( t.length > 14 ) return t;
+      if (t.length > 14) return t;
       var date = [],
         time = [];
       date.push(t.substr(0, 4));
@@ -56,28 +56,28 @@ export default {
       time.push(t.substr(10, 2));
       time.push(t.substr(12, 2));
       return date.join("/") + " " + time.join(":");
-    },
+    }
   },
-  computed:{
-    filterRow(){
-      return this.page.filterdata = (!this.page.filterdata.length) ? this.data.stations : this.page.filterdata;
+  computed: {
+    filterRow() {
+      return (this.page.filterdata = !this.page.filterdata.length
+        ? this.data.stations
+        : this.page.filterdata);
     }
   },
   methods: {
-    setSort( obj ){
+    setSort(obj) {
       const _self = this;
       if (_self.sort[obj] === "less") {
         _self.sort[obj] = "";
         return _self.filterRow.sort((a, b) => a[obj] - b[obj]);
-
       } else {
         _self.sort[obj] = "less";
         return _self.filterRow.sort((a, b) => b[obj] - a[obj]);
-
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
