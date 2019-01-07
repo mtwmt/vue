@@ -29,7 +29,9 @@ export default {
       return self.ubikecity[temp];
     }
   },
-  created() {},
+  created() {
+    
+  },
   methods: {
     // ...mapMutations(["setStation"]),
     // ...mapGetters(["initLoad"]),
