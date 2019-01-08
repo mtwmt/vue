@@ -8,8 +8,9 @@
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
+        v-if="ubikeArea.length"
       >{{ area.label }}</button>
-      <div class="dropdown-menu" aria-labelledby="areaButton">
+      <div class="dropdown-menu" aria-labelledby="areaButton" >
         <a
           class="dropdown-item"
           href="#"
@@ -42,10 +43,11 @@ export default {
   computed: {
     ubikeArea() {
       const _self = this;
-      let temp = [];
+      let temp;
       temp = _self.data.stations.map(e => e.sarea);
       temp = temp.filter((el, idx, arr) => arr.indexOf(el) === idx);
-      return ["全區搜尋", ...temp];
+
+      return (!temp[0]) ? '' : ["全區搜尋", ...temp];
     }
   },
   methods: {

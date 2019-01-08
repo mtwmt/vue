@@ -4,6 +4,56 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
+var xmlToJson =  function(xml) {
+
+  // Create the return object
+  var obj = {};
+
+  
+  for (var i = 0; i < xml.childNodes.length; i++) {
+    var item = xml.childNodes.item(i);
+    var nodeName = item.nodeName;
+    if (typeof (obj[nodeName]) == "undefined") {
+      obj[nodeName] = xmlToJson(item);
+    } else {
+      if (typeof (obj[nodeName].push) == "undefined") {
+        var old = obj[nodeName];
+        obj[nodeName] = [];
+        obj[nodeName].push(old);
+      }
+      obj[nodeName].push(xmlToJson(item));
+    }
+  }
+  
+  return obj;
+}
+var xml2json = function (srcDOM){
+  let children = [...srcDOM.children];
+  // base case for recursion. 
+  if (!children.length) {
+    return srcDOM.innerHTML
+  }
+  // initializing object to be returned. 
+  let jsonResult = {};
+
+  for (let child of children) {
+    // checking is child has siblings of same name. 
+    let childIsArray = children.filter(eachChild => eachChild.nodeName === child.nodeName).length > 1;
+    // if child is array, save the values as array, else as strings. 
+    if (childIsArray) {
+      if (jsonResult[child.nodeName] === undefined) {
+        jsonResult[child.nodeName] = [xml2json(child)];
+      } else {
+        jsonResult[child.nodeName].push(xml2json(child));
+      }
+    } else {
+      jsonResult[child.nodeName] = xml2json(child);
+    }
+  }
+  
+  return jsonResult;
+};
+
 let store = new Vuex.Store({
   state: {
     isLoading: true,
@@ -38,13 +88,14 @@ let store = new Vuex.Store({
         cn: '高雄市',
         stations: [],
       },
+      pingtung: {
+        en: 'pingtung',
+        cn: '屏東',
+        stations: [],
+      },
     },
   },
-  getters: {
-    xmltojson: function(){
-
-    }
-  },
+  getters: {},
   mutations: {
     setStation(state, data) {
       return (state.ubikecity[data.city].stations = data.stations);
@@ -148,74 +199,91 @@ let store = new Vuex.Store({
         });
     },
     loadkaohsiungUbike(obj) {
-      var xmlToJson = function(xml) {
-        // Create the return object
-        var json = {};
-
-        console.log('xml', xml.nodeType);
-
-        if (xml.nodeType == 1) {
-          // element
-          // do attributes
-          if (xml.attributes.length > 0) {
-            json['@attributes'] = {};
-            for (var j = 0; j < xml.attributes.length; j++) {
-              var attribute = xml.attributes.item(j);
-              json['@attributes'][attribute.nodeName] = attribute.nodeValue;
-            }
-            console.log('json1', json);
-          }
-        } else if (xml.nodeType == 3) {
-          // text
-          json = xml.nodeValue;
-          console.log('json2', json);
-        }
-        // do children
-        // If just one text node inside
-        
-
-        if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
-          json = xml.childNodes[0].nodeValue;
-          console.log('json3', json);
-        } else if (xml.hasChildNodes()) {
-          for (var i = 0; i < xml.childNodes.length; i++) {
-            var item = xml.childNodes.item(i);
-            var nodeName = item.nodeName;
-            if (typeof json[nodeName] == 'undefined') {
-              json[nodeName] = xmlToJson(item);
-              console.log('json4', json);
-            } else {
-              if (typeof json[nodeName].push == 'undefined') {
-                var old = json[nodeName];
-                json[nodeName] = [];
-                json[nodeName].push(old);
-              }
-              json[nodeName].push(xmlToJson(item));
-              console.log('json5', json);
+      axios({
+        method: 'get',
+        url:
+          'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=https://www.c-bike.com.tw/xml/stationlistopendata.aspx&type=xml',
+      }).then(res => {
+        let xmlstr = res.data,
+          newData = [];
+        const parser = new DOMParser(),
+          srcDOM = parser.parseFromString(xmlstr, 'application/xml'),
+          json = xml2json(srcDOM).BIKEStationData.BIKEStation.Station;
+        json.map(function(e, i) {
+          newData[i] = {};
+          for (let item in e) {
+            switch (item) {
+              case 'StationNO':
+                newData[i].sno = e[item];
+                break;
+              case 'StationName':
+                newData[i].sna = e[item];
+                break;
+              case 'StationDesc':
+                newData[i].desc = e[item];
+                break;
+              case 'StationLon':
+                newData[i].lng = e[item];
+                break;
+              case 'StationLat':
+                newData[i].lat = e[item];
+                break;
+              case 'StationAddress':
+                newData[i].ar = e[item];
+                break;
+              case 'StationNums1':
+                newData[i].sbi = e[item];
+                break;
             }
           }
-        }
-        
-        return json;
-      };
-      axios
-        .get(
-          'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=https://pbike.pthg.gov.tw/xml/stationlist.aspx&type=xml',{
-            headers: { "Content-type": "application/xml" }
-          }
-        )
-        .then(res => {
-          // const xml = res;
-          // const json = xml.getElementsByTagName('BIKEStationData');
-          console.log('res1', res.data);
-          data = xmlToJson(res.data);
-          console.log('res2', data);
-
-          // obj.commit('setStation', {
-          //   city: 'kaohsiung',
-          //   stations: temp
-          // });
+          newData[i].tot = parseInt(e.StationNums1) + parseInt(e.StationNums2);
+          newData[i].desc = newData[i].desc.split('●')[0];
         });
+        obj.commit('setStation', { city: 'kaohsiung', stations: newData });
+      });
+    },
+    loadpingtungUbike(obj) {
+      axios({
+        method: 'get',
+        url:
+          'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=https://pbike.pthg.gov.tw/xml/stationlist.aspx&type=xml',
+      }).then(res => {
+        let xmlstr = res.data,
+          newData = [];
+        const parser = new DOMParser(),
+          srcDOM = parser.parseFromString(xmlstr, 'application/xml'),
+          json = xml2json(srcDOM).BIKEStationData.BIKEStation.Station;
+        json.map(function(e, i) {
+          newData[i] = {};
+          for (let item in e) {
+            switch (item) {
+              case 'StationID':
+                newData[i].sno = e[item];
+                break;
+              case 'StationName':
+                newData[i].sna = e[item];
+                break;
+              case 'StationDesc':
+                newData[i].desc = e[item];
+                break;
+              case 'StationLon':
+                newData[i].lng = e[item];
+                break;
+              case 'StationLat':
+                newData[i].lat = e[item];
+                break;
+              case 'StationAddress':
+                newData[i].ar = e[item];
+                break;
+              case 'StationNums1':
+                newData[i].sbi = e[item];
+                break;
+            }
+          }
+          newData[i].tot = parseInt(e.StationNums1) + parseInt(e.StationNums2);
+        });
+        obj.commit('setStation', { city: 'pingtung', stations: newData });
+      });
     },
   },
 });
@@ -226,7 +294,3 @@ export default store;
 // sbi：場站目前車輛數量、 sarea：場站區域(中文)、 mday：資料更新時間、
 // lat：緯度、 lng：經度、 ar：地(中文)、 sareaen：場站區域(英文)、
 // snaen：場站名稱(英文)、 aren：地址(英文)、 bemp：空位數量、 act：全站禁用狀態
-
-
-// https://pbike.pthg.gov.tw/xml/stationlist.aspx
-// https://www.c-bike.com.tw/xml/stationlistopendata.aspx

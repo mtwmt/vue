@@ -4,7 +4,8 @@
       <tr>
         <th>#</th>
         <th>場站名稱</th>
-        <th>場站區域</th>
+        <th v-if="filterRow[0].sarea">場站區域</th>
+        <th v-if="filterRow[0].desc">場站描述</th>
         <th @click="setSort('sbi')">
           可用車輛
           <i :class="!sort.sbi ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"></i>
@@ -13,7 +14,7 @@
           總停車格
           <i :class="!sort.tot ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"></i>
         </th>
-        <th class="tbl-hidden">資料更新時間</th>
+        <th class="tbl-hidden" v-if="filterRow[0].mday">資料更新時間</th>
       </tr>
     </thead>
     <tbody>
@@ -23,10 +24,11 @@
       >
         <td>{{ s.sno }}</td>
         <td>{{ s.sna }}</td>
-        <td>{{ s.sarea }}</td>
+        <td v-if="s.sarea">{{ s.sarea }}</td>
+        <td v-if="s.desc">{{ s.desc }}</td>
         <td>{{ s.sbi }}</td>
         <td>{{ s.tot }}</td>
-        <td class="tbl-hidden">{{ s.mday | timeFormat }}</td>
+        <td class="tbl-hidden" v-if="s.mday">{{ s.mday | timeFormat }}</td>
       </tr>
     </tbody>
   </table>
