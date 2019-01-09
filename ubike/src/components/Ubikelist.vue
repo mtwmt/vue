@@ -23,7 +23,7 @@
         :key="i"
       >
         <td>{{ s.sno }}</td>
-        <td>{{ s.sna }}</td>
+        <td class="nowrap">{{ s.sna }}</td>
         <td v-if="s.sarea">{{ s.sarea }}</td>
         <td v-if="s.desc">{{ s.desc }}</td>
         <td>{{ s.sbi }}</td>
@@ -62,9 +62,7 @@ export default {
   },
   computed: {
     filterRow() {
-      return (this.page.filterdata = !this.page.filterdata.length
-        ? this.data.stations
-        : this.page.filterdata);
+      return this.page.filterdata = (!this.page.filterdata.length) ? this.data.stations : this.page.filterdata;
     }
   },
   methods: {
@@ -83,10 +81,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// th,
-// td {
-//   white-space: nowrap;
-// }
+.nowrap{
+  white-space: nowrap;
+}
+
 @media screen and (max-width: 639px) {
   .tbl-hidden {
     display: none;

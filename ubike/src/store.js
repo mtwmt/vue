@@ -8,8 +8,6 @@ var xmlToJson =  function(xml) {
 
   // Create the return object
   var obj = {};
-
-  
   for (var i = 0; i < xml.childNodes.length; i++) {
     var item = xml.childNodes.item(i);
     var nodeName = item.nodeName;
@@ -61,16 +59,19 @@ let store = new Vuex.Store({
       taipei: {
         en: 'taipei',
         cn: '台北市',
+        bike: 'YouBike',
         stations: [],
       },
       xinbei: {
         en: 'xinbei',
         cn: '新北市',
+        bike: 'YouBike',
         stations: [],
       },
       taoyuan: {
         en: 'taoyuan',
         cn: '桃園市',
+        bike: 'YouBike',
         stations: [],
       },
       // hsinchu: {
@@ -81,16 +82,25 @@ let store = new Vuex.Store({
       taichung: {
         en: 'taichung',
         cn: '台中',
+        bike: 'iBike',
         stations: [],
       },
+      // tainan: {
+      //   en: 'tainan',
+      //   cn: '台南',
+      //   bike: 'T-Bike',
+      //   stations: [],
+      // },
       kaohsiung: {
         en: 'kaohsiung',
         cn: '高雄市',
+        bike: 'CityBike',
         stations: [],
       },
       pingtung: {
         en: 'pingtung',
         cn: '屏東',
+        bike: 'Pbike',
         stations: [],
       },
     },
@@ -294,3 +304,4 @@ export default store;
 // sbi：場站目前車輛數量、 sarea：場站區域(中文)、 mday：資料更新時間、
 // lat：緯度、 lng：經度、 ar：地(中文)、 sareaen：場站區域(英文)、
 // snaen：場站名稱(英文)、 aren：地址(英文)、 bemp：空位數量、 act：全站禁用狀態
+// desc : 場站描述
