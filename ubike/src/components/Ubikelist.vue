@@ -60,11 +60,10 @@ export default {
       return date.join("/") + " " + time.join(":");
     }
   },
+  created(){},
   computed: {
     filterRow() {
-      return (this.page.filterdata = !this.page.filterdata.length
-        ? this.data.stations
-        : this.page.filterdata);
+      return this.page.filterdata = (!this.page.filterdata.length) ? this.data.stations : this.page.filterdata;
     }
   },
   methods: {

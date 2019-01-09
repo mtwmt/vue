@@ -8,8 +8,6 @@ var xmlToJson =  function(xml) {
 
   // Create the return object
   var obj = {};
-
-  
   for (var i = 0; i < xml.childNodes.length; i++) {
     var item = xml.childNodes.item(i);
     var nodeName = item.nodeName;
@@ -120,24 +118,16 @@ let store = new Vuex.Store({
         .then(res => {
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           let temp = res.filter(i => i.act === '1');
-          obj.commit('setStation', {
-            city: 'xinbei',
-            stations: temp,
-          });
+          obj.commit('setStation', { city: 'xinbei', stations: temp });
         });
     },
     loadtaoyuanUbike(obj) {
       axios
-        .get(
-          'https://script.google.com/macros/s/AKfycbzn2V1by0BTpdXW975rnHNvX6fF6nA4SxYyMlOGjNA4EE_wtg0/exec'
-        )
+        .get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=https://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json')
         .then(res => {
-          res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
+          res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           let temp = res.filter(i => i.act === '1');
-          obj.commit('setStation', {
-            city: 'taoyuan',
-            stations: temp,
-          });
+          obj.commit('setStation', { city: 'taoyuan', stations: temp });
         });
     },
     loadhsinchuUbike(obj) {},
@@ -294,3 +284,4 @@ export default store;
 // sbi：場站目前車輛數量、 sarea：場站區域(中文)、 mday：資料更新時間、
 // lat：緯度、 lng：經度、 ar：地(中文)、 sareaen：場站區域(英文)、
 // snaen：場站名稱(英文)、 aren：地址(英文)、 bemp：空位數量、 act：全站禁用狀態
+
