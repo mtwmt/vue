@@ -4,27 +4,27 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-var xmlToJson =  function(xml) {
+// var xmlToJson =  function(xml) {
 
-  // Create the return object
-  var obj = {};
-  for (var i = 0; i < xml.childNodes.length; i++) {
-    var item = xml.childNodes.item(i);
-    var nodeName = item.nodeName;
-    if (typeof (obj[nodeName]) == "undefined") {
-      obj[nodeName] = xmlToJson(item);
-    } else {
-      if (typeof (obj[nodeName].push) == "undefined") {
-        var old = obj[nodeName];
-        obj[nodeName] = [];
-        obj[nodeName].push(old);
-      }
-      obj[nodeName].push(xmlToJson(item));
-    }
-  }
+//   // Create the return object
+//   var obj = {};
+//   for (var i = 0; i < xml.childNodes.length; i++) {
+//     var item = xml.childNodes.item(i);
+//     var nodeName = item.nodeName;
+//     if (typeof (obj[nodeName]) == "undefined") {
+//       obj[nodeName] = xmlToJson(item);
+//     } else {
+//       if (typeof (obj[nodeName].push) == "undefined") {
+//         var old = obj[nodeName];
+//         obj[nodeName] = [];
+//         obj[nodeName].push(old);
+//       }
+//       obj[nodeName].push(xmlToJson(item));
+//     }
+//   }
   
-  return obj;
-}
+//   return obj;
+// }
 var xml2json = function (srcDOM){
   let children = [...srcDOM.children];
   // base case for recursion. 
@@ -296,8 +296,4 @@ export default store;
 // sbi：場站目前車輛數量、 sarea：場站區域(中文)、 mday：資料更新時間、
 // lat：緯度、 lng：經度、 ar：地(中文)、 sareaen：場站區域(英文)、
 // snaen：場站名稱(英文)、 aren：地址(英文)、 bemp：空位數量、 act：全站禁用狀態
-<<<<<<< HEAD
 // desc : 場站描述
-=======
-
->>>>>>> 80ae47709082785e0a359765287a42f03238573e
