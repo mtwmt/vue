@@ -48,7 +48,6 @@ var xml2json = function (srcDOM){
       jsonResult[child.nodeName] = xml2json(child);
     }
   }
-  
   return jsonResult;
 };
 
@@ -74,23 +73,23 @@ let store = new Vuex.Store({
         bike: 'YouBike',
         stations: [],
       },
-      // hsinchu: {
-      //   en: 'hsinchu',
-      //   cn: '新竹',
-      //   stations: [],
-      // },
+      hsinchu: {
+        en: 'hsinchu',
+        cn: '新竹',
+        stations: [],
+      },
       taichung: {
         en: 'taichung',
         cn: '台中',
         bike: 'iBike',
         stations: [],
       },
-      // tainan: {
-      //   en: 'tainan',
-      //   cn: '台南',
-      //   bike: 'T-Bike',
-      //   stations: [],
-      // },
+      tainan: {
+        en: 'tainan',
+        cn: '台南市',
+        bike: 'T-Bike',
+        stations: [],
+      },
       kaohsiung: {
         en: 'kaohsiung',
         cn: '高雄市',
@@ -142,7 +141,12 @@ let store = new Vuex.Store({
           obj.commit('setStation', { city: 'taoyuan', stations: temp });
         });
     },
-    loadhsinchuUbike(obj) {},
+    loadhsinchuUbike(obj) {
+      axios.get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?https://apis.youbike.com.tw/useAPI?action=ub_site_by_sno_class&datas%5Blang%5D=tw&datas%5Bloc%5D=hccg')
+      .then( res => {
+        console.log( res )
+      });
+    },
     loadtaichungUbike(obj) {
       axios
         .get(
@@ -196,6 +200,59 @@ let store = new Vuex.Store({
           // let temp = res.filter(i => i.act === '1');
           obj.commit('setStation', {
             city: 'taichung',
+            stations: newData,
+          });
+        });
+    },
+    loadtainanUbike(obj) {
+      axios
+        .get(
+          'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=http://tbike.tainan.gov.tw:8081/Service/StationStatus/Json'
+        )
+        .then(res => {
+          var newData = [];
+          res.data.map(function(e, i) {
+            newData[i] = {};
+            for (let item in e) {
+              switch (item) {
+                case 'Id':
+                  newData[i].sno = e[item];
+                  break;
+                case 'StationName':
+                  newData[i].sna = e[item];
+                  break;
+                case 'EnglishStationName':
+                  newData[i].snaen = e[item];
+                  break;
+                case 'District':
+                  newData[i].sarea = e[item];
+                  break;
+                case 'Longitude':
+                  newData[i].lng = e[item];
+                  break;
+                case 'Latitude':
+                  newData[i].lat = e[item];
+                  break;
+                case 'UpdateTime':
+                  newData[i].mday = e[item];
+                  break;
+                case 'Address':
+                  newData[i].ar = e[item];
+                  break;
+                case 'EnglishAddress':
+                  newData[i].aren = e[item];
+                  break;
+                case 'Capacity':
+                  newData[i].tot = e[item];
+                  break;
+                case 'AvaliableBikeCount':
+                  newData[i].sbi = e[item];
+                  break;
+              }
+            }
+          });
+          obj.commit('setStation', {
+            city: 'tainan',
             stations: newData,
           });
         });
