@@ -23,7 +23,7 @@
         :key="i"
       >
         <td>{{ s.sno }}</td>
-        <td>{{ s.sna }}</td>
+        <td class="nowrap">{{ s.sna }}</td>
         <td v-if="s.sarea">{{ s.sarea }}</td>
         <td v-if="s.desc">{{ s.desc }}</td>
         <td>{{ s.sbi }}</td>
@@ -84,10 +84,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+<<<<<<< HEAD
 // th,
 // td {
 //   white-space: nowrap;
 // }
+=======
+.nowrap{
+  white-space: nowrap;
+}
+>>>>>>> 44dfdda94ef7a65af01230332c7934dc769cce95
 
 @media screen and (max-width: 639px) {
   .tbl-hidden {

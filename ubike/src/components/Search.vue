@@ -56,13 +56,28 @@ export default {
       _self.page.pagenow = 1;
       _self.area.label = area;
       let tempArr = [];
+
       tempArr = _self.data.stations.filter(function(e) {
-        if (e.sarea.indexOf(area) >= 0) {
-          return e;
+        if( e.sarea ){
+          if (e.sarea.indexOf(area) >= 0) {
+            return e;
+          }
         }
       });
       tempArr = !tempArr.length ? _self.data.stations : tempArr;
-      tempArr = tempArr.filter(e => e.sna.indexOf(keyword) >= 0);
+
+      
+      // tempArr = tempArr.filter(e => e.sna.indexOf(keyword) >= 0);
+
+
+      tempArr = tempArr.filter(function(e){
+        if( e.desc ){
+          return e.sna.indexOf(keyword) >= 0 || e.desc.indexOf(keyword) >= 0;
+        }else{
+          return e.sna.indexOf(keyword) >= 0;
+        }
+        
+      })
 
       return (_self.page.filterdata = tempArr);
     }

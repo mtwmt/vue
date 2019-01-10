@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>YouBike {{ currentCity.cn }}公共自行車即時資訊</h1>
+    <h1>{{ currentCity.bike }} {{ currentCity.cn }}公共自行車即時資訊</h1>
     <nav>
       <ul>
         <router-link
