@@ -84,16 +84,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-<<<<<<< HEAD
-// th,
-// td {
-//   white-space: nowrap;
-// }
-=======
 .nowrap{
   white-space: nowrap;
 }
->>>>>>> 44dfdda94ef7a65af01230332c7934dc769cce95
 
 @media screen and (max-width: 639px) {
   .tbl-hidden {
