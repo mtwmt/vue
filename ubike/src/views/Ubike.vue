@@ -6,7 +6,13 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <ubike-list v-else :data="loadStation" :area="ubikearea" :page="page"/>
+    <div v-else>
+      <google-map
+        :gmap="page.filterdata"
+      ></google-map>
+      <pagination :page="page"/>
+      <ubike-list  :data="loadStation" :area="ubikearea" :page="page"/>
+    </div>
     <pagination :page="page"/>
   </div>
 </template>
@@ -16,10 +22,10 @@ import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 import ubikeList from "@/components/Ubikelist.vue";
 import searchBar from "@/components/Search.vue";
 import pagination from "@/components/Page.vue";
-
+import googleMap from "@/components/Map.vue";
 export default {
   name: "ubike",
-  components: { searchBar, pagination, ubikeList },
+  components: { searchBar, googleMap ,pagination, ubikeList },
   data() {
     return {
       page: {
@@ -50,7 +56,6 @@ export default {
       if (_self.ubikecity[routeCity].stations.length > 0) {
         _self.$store.commit("loadStatus", false);
       }
-
       return _self.ubikecity[routeCity];
     }
   },
