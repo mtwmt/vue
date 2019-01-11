@@ -41,6 +41,7 @@ export default {
 <style lang="scss">
 body {
   padding: 1rem;
+  background-color: #f8f8f8;
 }
 ul > li {
   margin: 0.5rem 0.5rem 0 0;

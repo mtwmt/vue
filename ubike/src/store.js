@@ -73,11 +73,11 @@ let store = new Vuex.Store({
         bike: 'YouBike',
         stations: [],
       },
-      hsinchu: {
-        en: 'hsinchu',
-        cn: '新竹',
-        stations: [],
-      },
+      // hsinchu: {
+      //   en: 'hsinchu',
+      //   cn: '新竹',
+      //   stations: [],
+      // },
       taichung: {
         en: 'taichung',
         cn: '台中',
