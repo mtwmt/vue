@@ -60,6 +60,7 @@ export default {
       return date.join("/") + " " + time.join(":");
     }
   },
+  mounted(){},
   created(){},
   computed: {
     filterRow() {
@@ -67,6 +68,7 @@ export default {
     }
   },
   methods: {
+
     setSort(obj) {
       const _self = this;
       if (_self.sort[obj] === "less") {

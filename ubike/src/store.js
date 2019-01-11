@@ -4,27 +4,6 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-// var xmlToJson =  function(xml) {
-
-//   // Create the return object
-//   var obj = {};
-//   for (var i = 0; i < xml.childNodes.length; i++) {
-//     var item = xml.childNodes.item(i);
-//     var nodeName = item.nodeName;
-//     if (typeof (obj[nodeName]) == "undefined") {
-//       obj[nodeName] = xmlToJson(item);
-//     } else {
-//       if (typeof (obj[nodeName].push) == "undefined") {
-//         var old = obj[nodeName];
-//         obj[nodeName] = [];
-//         obj[nodeName].push(old);
-//       }
-//       obj[nodeName].push(xmlToJson(item));
-//     }
-//   }
-  
-//   return obj;
-// }
 var xml2json = function (srcDOM){
   let children = [...srcDOM.children];
   // base case for recursion. 
@@ -54,6 +33,7 @@ var xml2json = function (srcDOM){
 let store = new Vuex.Store({
   state: {
     isLoading: true,
+    location: [],
     ubikecity: {
       taipei: {
         en: 'taipei',
@@ -106,19 +86,31 @@ let store = new Vuex.Store({
   },
   getters: {},
   mutations: {
-    setStation(state, data) {
-      return (state.ubikecity[data.city].stations = data.stations);
+    initStation(state, data) {
+      return state.ubikecity[data.city].stations = data.stations;
     },
     loadStatus(state, data) {
-      return (state.isLoading = data);
+      return state.isLoading = data;
+    },
+    initLocation(state, data) {
+      return state.location = data;
     },
   },
   actions: {
+    loadLocation(obj) {
+      axios
+        .post(
+          'https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBGd0MP4HMs0p6dQ_xV6gt-5XBkZc4jmD8'
+        )
+        .then(res => {
+          obj.commit('initLocation', res.data.location);
+        });
+    },
     loadtaipeiUbike(obj) {
       axios.get('https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.gz').then(res => {
         res = Object.keys(res.data.retVal).map(key => res.data.retVal[key]);
         let temp = res.filter(i => i.act === '1');
-        obj.commit('setStation', { city: 'taipei', stations: temp });
+        obj.commit('initStation', { city: 'taipei', stations: temp });
       });
     },
     loadxinbeiUbike(obj) {
@@ -129,23 +121,28 @@ let store = new Vuex.Store({
         .then(res => {
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           let temp = res.filter(i => i.act === '1');
-          obj.commit('setStation', { city: 'xinbei', stations: temp });
+          obj.commit('initStation', { city: 'xinbei', stations: temp });
         });
     },
     loadtaoyuanUbike(obj) {
       axios
-        .get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=https://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json')
+        .get(
+          'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?url=https://data.tycg.gov.tw/api/v1/rest/datastore/a1b4714b-3b75-4ff8-a8f2-cc377e4eaa0f?format=json'
+        )
         .then(res => {
           res = Object.keys(res.data.result.records).map(key => res.data.result.records[key]);
           let temp = res.filter(i => i.act === '1');
-          obj.commit('setStation', { city: 'taoyuan', stations: temp });
+          obj.commit('initStation', { city: 'taoyuan', stations: temp });
         });
     },
     loadhsinchuUbike(obj) {
-      axios.get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?//apis.youbike.com.tw/useAPI?action=ub_site_by_sno_class&datas%5Blang%5D=tw&datas%5Bloc%5D=hccg')
-      .then( res => {
-        console.log( res )
-      });
+      axios
+        .get(
+          'https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?https://apis.youbike.com.tw/useAPI?action=ub_site_by_sno_class&datas%5Blang%5D=tw&datas%5Bloc%5D=hccg'
+        )
+        .then(res => {
+          console.log(res);
+        });
     },
     loadtaichungUbike(obj) {
       axios
@@ -198,7 +195,7 @@ let store = new Vuex.Store({
             }
           });
           // let temp = res.filter(i => i.act === '1');
-          obj.commit('setStation', {
+          obj.commit('initStation', {
             city: 'taichung',
             stations: newData,
           });
@@ -251,7 +248,7 @@ let store = new Vuex.Store({
               }
             }
           });
-          obj.commit('setStation', {
+          obj.commit('initStation', {
             city: 'tainan',
             stations: newData,
           });
@@ -298,7 +295,7 @@ let store = new Vuex.Store({
           newData[i].tot = parseInt(e.StationNums1) + parseInt(e.StationNums2);
           newData[i].desc = newData[i].desc.split('●')[0];
         });
-        obj.commit('setStation', { city: 'kaohsiung', stations: newData });
+        obj.commit('initStation', { city: 'kaohsiung', stations: newData });
       });
     },
     loadpingtungUbike(obj) {
@@ -341,7 +338,7 @@ let store = new Vuex.Store({
           }
           newData[i].tot = parseInt(e.StationNums1) + parseInt(e.StationNums2);
         });
-        obj.commit('setStation', { city: 'pingtung', stations: newData });
+        obj.commit('initStation', { city: 'pingtung', stations: newData });
       });
     },
   },

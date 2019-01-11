@@ -10,10 +10,18 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
   <style>
     body{ padding: 1em;  }
+    #map {
+      margin: 10px 0;
+      height: 400px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
 <h1>YouBike 臺北市公共自行車即時資訊</h1>
+<div id="map">
+
+</div>
 <div id="app">
   <search-bar
     :ubike-area="ubikeArea"
@@ -60,5 +68,14 @@
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.18-beta.0/vue.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script>
-
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGd0MP4HMs0p6dQ_xV6gt-5XBkZc4jmD8&callback=initMap" type="text/javascript"></script> -->
 <script src='js/ubike.js'></script>
+<script>
+  var map;
+  function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
+      });
+    }
+</script>
