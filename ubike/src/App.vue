@@ -30,7 +30,7 @@ export default {
     }
   },
   created() {
-    
+    this.$store.dispatch('loadLocation');
   },
   methods: {
     // ...mapMutations(["setStation"]),
