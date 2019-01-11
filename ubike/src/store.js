@@ -142,7 +142,7 @@ let store = new Vuex.Store({
         });
     },
     loadhsinchuUbike(obj) {
-      axios.get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?https://apis.youbike.com.tw/useAPI?action=ub_site_by_sno_class&datas%5Blang%5D=tw&datas%5Bloc%5D=hccg')
+      axios.get('https://script.google.com/macros/s/AKfycbzOdvWalYBBLDWpX1h_mE0mL-HMV9wygY6jI-ITovsVPIb6LSqb/exec?//apis.youbike.com.tw/useAPI?action=ub_site_by_sno_class&datas%5Blang%5D=tw&datas%5Bloc%5D=hccg')
       .then( res => {
         console.log( res )
       });
