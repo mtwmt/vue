@@ -55,20 +55,13 @@ export default {
   created() {},
   mounted(){
     if( this.gmap.length>0 ){
-      this.initMap({
-        lat: this.location.lat,
-        lng: this.location.lng
-      });
-      
+      this.initMap();
     }
   },
   watch: {
     gmap(){
       if( this.gmap.length>0 ){
-        this.initMap({
-          lat: parseFloat(this.gmap[0].lat),
-          lng: parseFloat(this.gmap[0].lng)
-        });
+        this.initMap();
       }
     }
   },
@@ -77,21 +70,39 @@ export default {
   },
   methods:{
     initMap: function( option ){
+
       var _self = this,
           marker,
-          setting = {
-            center: { lat: option.lat, lng: option.lng },
-            scrollwheel: false,
-            zoom: 16,
-          };
+          bounds,
+          bounds = new google.maps.LatLngBounds(),
+          setting;
 
-      poimark();
+      // poimark();
+     
 
+      setting = {
+        center: {lat: _self.location.lat, lng: _self.location.lng},
+        scrollwheel: false,
+        zoom: 16,
+      }
       map = new google.maps.Map(document.getElementById('gmap'),setting);
-      var htmlMarker = new HTMLMarker( {lat: this.location.lat, lng: this.location.lng} );
-      htmlMarker.setMap( map );      
-
+      var bounds = new google.maps.LatLngBounds();
+                       
+    
+      // var htmlMarker = new HTMLMarker( _self.location.lat,  _self.location.lng );
+      // htmlMarker.setMap( map );
+      
+      // marker = new google.maps.Marker({
+      //         map: map,
+      //         draggable: false,
+      //         animation: google.maps.Animation.DROP,
+      //         position: {lat: parseFloat(_self.gmap[0].lat), lng: parseFloat(_self.gmap[0].lat)},
+      //         title: e.sna
+      //       });
+      
       this.gmap.map( function( e,i ){
+        bounds.extend(new google.maps.LatLng(parseFloat(e.lat), parseFloat(e.lng)));
+        
         var marker = new google.maps.Marker({
               map: map,
               draggable: false,
@@ -100,7 +111,7 @@ export default {
               title: e.sna
             });
       });
-      
+      map.fitBounds(bounds);
     },
   }
 }
