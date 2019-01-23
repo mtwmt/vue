@@ -70,11 +70,10 @@ export default {
   },
   methods:{
     initMap: function( option ){
-
       var _self = this,
           marker,
           bounds,
-          bounds = new google.maps.LatLngBounds(),
+          // bounds = new google.maps.LatLngBounds(),
           setting;
 
       // poimark();
