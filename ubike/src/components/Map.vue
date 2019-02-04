@@ -72,12 +72,8 @@ export default {
     initMap: function( option ){
       var _self = this,
           marker,
-<<<<<<< HEAD
-          bounds = new google.maps.LatLngBounds(),
-=======
           bounds,
           // bounds = new google.maps.LatLngBounds(),
->>>>>>> a438f357c3f4c34c849f145a73de839181c60c6a
           setting;
 
       // poimark();
