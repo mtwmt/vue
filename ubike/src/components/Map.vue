@@ -73,7 +73,6 @@ export default {
 
       var _self = this,
           marker,
-          bounds,
           bounds = new google.maps.LatLngBounds(),
           setting;
 
@@ -86,7 +85,7 @@ export default {
         zoom: 16,
       }
       map = new google.maps.Map(document.getElementById('gmap'),setting);
-      var bounds = new google.maps.LatLngBounds();
+      
                        
     
       // var htmlMarker = new HTMLMarker( _self.location.lat,  _self.location.lng );
@@ -112,6 +111,7 @@ export default {
             });
       });
       map.fitBounds(bounds);
+      map.panToBounds(bounds);
     },
   }
 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+  <style>
+    body{ padding: 1em;  }
+    #map {
+      margin: 10px 0;
+      height: 400px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<h1>YouBike 臺北市公共自行車即時資訊</h1>
+<div id="map">
+
+</div>
+<div id="app">
+  <search-bar
+    :ubike-area="ubikeArea"
+    @setarea="getArea"
+    @setkeyword="getKeyword"
+    v-model="ubikeArea.keyword"
+  ></search-bar>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>場站名稱</th>
+          <th>場站區域</th>
+          <th @click="getSort('sbi', sort)">目前可用車輛 <i :class="!sort.sbi ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
+          <th @click="getSort('tot', sort)">總停車格 <i :class="!sort.tot ? 'fas fa-arrow-circle-up' : 'fas fa-arrow-circle-down'"  ></i></th>
+          <th>資料更新時間</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="s in list.data">
+          <td>{{ s.sno }}</td>
+          <td>{{ s.sna }}</td>
+          <td>{{ s.sarea }}</td>
+          <td>{{ s.sbi }}</td>
+          <td>{{ s.tot }}</td>
+          <td>{{ s.mday | timeFormat }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination 
+    :page="list"
+    @listshow="getList"
+  ></pagination>
+</div>
+  
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.18-beta.0/vue.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script>
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGd0MP4HMs0p6dQ_xV6gt-5XBkZc4jmD8&callback=initMap" type="text/javascript"></script> -->
+<script src='js/ubike.js'></script>
+<script>
+  var map;
+  function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
+      });
+    }
+</script>
